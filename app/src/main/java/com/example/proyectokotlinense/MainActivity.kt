@@ -1,20 +1,21 @@
 package com.example.proyectokotlinense
 
+import android.content.Intent
 import android.os.Bundle
-import android.telecom.Call
 import android.widget.Toast
-import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import okhttp3.*
@@ -22,11 +23,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
-
-//Revisar las versiones de android
 class MainActivity : AppCompatActivity() {
 
-    val url = "http://localhost:8080/usuario";
+    private val url = "http://10.0.2.2:8080/api/auth/login"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,59 +37,95 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        //JetPassComposse enlazado
-        val vistadesdeelcomposse = findViewById<ComposeView>(R.id.holadesdelavistacomposse)
-        vistadesdeelcomposse.setContent {
-            HolaconJetPackCompose()
-        }
 
+        var varusuario by mutableStateOf("")
+        var varcontaseña by mutableStateOf("")
 
-    }
-fun login(username: String, password: String) {
-    val url = "http://10.0.2.2:8080/api/auth/login"
-    val json = """
-        {
-            "username": "$username",
-            "password": "$password"
-        }
-    """.trimIndent()
-
-    val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
-    val request = Request.Builder()
-        .url(url)
-        .post(requestBody)
-        .build()
-
-    val client = OkHttpClient()
-    client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: okhttp3.Call, e: IOException) {
-            runOnUiThread {
-                Toast.makeText(this@MainActivity, "ERROR: ${e.message}", Toast.LENGTH_SHORT).show()
+        findViewById<ComposeView>(R.id.botoniniciarsesion).setContent {
+            VistadelLogin(varusuario, varcontaseña, { varusuario = it }, { varcontaseña = it }) {
+                login(varusuario, varcontaseña)
             }
         }
+    }
 
-        override fun onResponse(call: okhttp3.Call, response: Response) {
-            runOnUiThread {
-                if (response.isSuccessful) {
-                    Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
+    private fun login(username: String, password: String) {
+        val json = """
+            {
+                "username": "$username",
+                "password": "$password"
+            }
+        """.trimIndent()
+
+        val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
+        val request = Request.Builder().url(url).post(requestBody).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "ERROR: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-    })
-}
-    @Preview (showSystemUi = true)
-    @Composable
-    private fun HolaconJetPackCompose() {
-        Text(text ="Hola con JetPack Compose" , modifier =  Modifier.wrapContentWidth(Alignment.CenterHorizontally))
-        Button(onClick={login("1","1")}) {}
 
-
-
-
+            override fun onResponse(call: okhttp3.Call, response: Response) {
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
     }
+}
 
 
-
+@Composable
+private fun VistadelLogin(
+    usuario: String,
+    contaseña: String,
+    usuarioteclado: (String) -> Unit,// Funcion para el teclado es decir el cambio de texto en el textfield de usuario
+    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
+    contraseñateclado: (String) -> Unit, // Funcion para el teclado es decir el cambio de texto en el textfield de contraseña
+    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
+    funcionIniciarSesion: () -> Unit //funcion para el boton de iniciar sesion
+    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
+) {
+    val context = LocalContext.current
+    //Alinear los textos en el centro
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(
+            value = usuario,
+            onValueChange = usuarioteclado,
+            label = { Text("Usuario") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = contaseña,
+            onValueChange = contraseñateclado,
+            label = { Text("Contraseña") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = funcionIniciarSesion,
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+        ) {
+            Text(text = "Iniciar Sesión", color = Color.White)
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            val intent = Intent(context, Registrarse::class.java)
+            context.startActivity(intent)
+        }, modifier = Modifier.fillMaxWidth() , colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)) {
+            Text(text = "Registrarse", color = Color.White)
+        }
+    }
 }
