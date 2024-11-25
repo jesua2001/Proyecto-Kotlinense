@@ -28,9 +28,11 @@ class MainActivity : AppCompatActivity() {
     private val url = "http://10.0.2.2:8080/api/auth/login"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
                 runOnUiThread {
-                    Toast.makeText(this@MainActivity, "ERROR: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "El usuario o contraseña son incorrectos", Toast.LENGTH_SHORT).show()
                 }
             }
 
