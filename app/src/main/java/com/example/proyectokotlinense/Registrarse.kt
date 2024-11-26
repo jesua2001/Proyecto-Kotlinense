@@ -1,16 +1,164 @@
 package com.example.proyectokotlinense
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
+import com.example.proyectokotlinense.modelo.Enum.TipoPago
+import com.example.proyectokotlinense.modelo.RegistroDTO
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
 
 class Registrarse : AppCompatActivity() {
 
-    private val url = "http://10.0.2.2:8080/api/auth/login";
+    private val url = "http://10.0.2.2:8080/api/auth/registro";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registrar)
+
+        var composablevista = findViewById<ComposeView>(R.id.registrarusuario).setContent {
+            registrarse()
+        }
+    }
+
+    private fun anadirusuario(registroDTO: RegistroDTO) {
+        val json = """
+        {
+            "usuario": "${registroDTO.usuario}",
+            "contraseña": "${registroDTO.contraseña}",
+            "correo": "${registroDTO.correo}",
+            "avatar": "${registroDTO.avatar}",
+            "tipoPago": "${registroDTO.tipoPago}"
+        }
+    """.trimIndent()
+
+        val client = OkHttpClient()
+        val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(this@Registrarse, "Error: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(
+                            this@Registrarse,
+                            "Usuario registrado con éxito",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        val intent = Intent(this@Registrarse, MainActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(
+                            this@Registrarse,
+                            "Error al registrar usuario: ${response.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
+    }
+
+    @Composable
+    private fun registrarse() {
+        var avatar by remember { mutableStateOf("") }
+        var username by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf("") }
+        var tipoPago by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TextField(
+                value = avatar,
+                onValueChange = { avatar = it },
+                label = { Text("Avatar URL") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Username") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextField(
+                value = tipoPago,
+                onValueChange = { tipoPago = it },
+                label = { Text("Tipo de Pago") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    val tipoPagoEnum = try {
+                        TipoPago.valueOf(tipoPago)
+                    } catch (e: IllegalArgumentException) {
+                        null
+                    }
+
+                    if (tipoPagoEnum != null) {
+                        val registroDTO =
+                            RegistroDTO(username, password, email, avatar, tipoPagoEnum)
+                        anadirusuario(registroDTO)
+                    } else {
+                        Toast.makeText(
+                            this@Registrarse,
+                            "Tipo de Pago inválido",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(text = "Registrar", color = Color.White)
+            }
+        }
     }
 }
