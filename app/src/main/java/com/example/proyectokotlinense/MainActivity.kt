@@ -115,7 +115,7 @@ private fun VistadelLogin(
             label = { Text("Contraseña") },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation()
-        )
+        )//.
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = funcionIniciarSesion,
