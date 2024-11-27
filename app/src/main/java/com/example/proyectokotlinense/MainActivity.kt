@@ -72,6 +72,8 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: okhttp3.Call, response: Response) {
                 runOnUiThread {
                     if (response.isSuccessful) {
+                        val Intent = Intent(this@MainActivity, VistaPrincipal::class.java)
+                        startActivity(Intent)
                         Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
