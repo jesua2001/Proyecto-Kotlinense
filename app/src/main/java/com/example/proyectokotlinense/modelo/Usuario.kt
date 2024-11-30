@@ -10,13 +10,7 @@ data class Usuario(
     val avatar: String,
     val pago : String,
     private val tipoPago: TipoPago,
-    private val  rol:Rol,
-    private val password: String,
-    private val eliminado: Boolean
-
-
-
-
+    private val  rol:Rol
 ) {
 
 }
