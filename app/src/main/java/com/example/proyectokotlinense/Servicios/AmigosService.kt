@@ -32,7 +32,7 @@ class AmigosService {
         return@withContext amigos
     }
 
-    private fun recuperarAmigos(texto: JSONArray): ArrayList<Usuario> {
+    fun recuperarAmigos(texto: JSONArray): ArrayList<Usuario> {
         val amigos = ArrayList<Usuario>()
 
         for (i in 0 until texto.length()) {
