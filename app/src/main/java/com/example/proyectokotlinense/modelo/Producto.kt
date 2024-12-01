@@ -7,6 +7,7 @@ data class Producto(
     val id: Int,
     val nombre: String,
     val descripcion: String,
+    val precio: Float,
     val imagen: String,
     val fecha: LocalDateTime,
     val factura: String,

@@ -49,7 +49,6 @@ class AmigosService {
 
             amigos.add(amigo)
         }
-        println("Amigos recuperados: $amigos")
         return amigos
     }
 }
