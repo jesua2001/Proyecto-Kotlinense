@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Proyecto Kotlinense</string>
+    <string name="image_desc">Imagen del producto</string>
+    <string name="name_hint">Introduzca el nombre</string>
+    <string name="price_hint">Introduzca el precio</string>
+    <string name="upload_image">Subir imagen</string>
+    <string name="upload_document">Subir documento</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Guardar</string>
+    <string name="name_label">Nombre</string>
 </resources>
