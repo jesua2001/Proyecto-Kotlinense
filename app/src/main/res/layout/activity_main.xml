@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:cardBackgroundColor="#D3D3D3"
+        app:cardBackgroundColor="#626161"
         app:cardCornerRadius="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
