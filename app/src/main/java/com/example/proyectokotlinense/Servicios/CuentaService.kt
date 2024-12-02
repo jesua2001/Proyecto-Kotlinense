@@ -2,7 +2,6 @@ package com.example.proyectokotlinense.Servicios
 
 import AmigosService
 import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.proyectokotlinense.modelo.Cuenta
 import com.example.proyectokotlinense.modelo.Enum.Rol
 import com.example.proyectokotlinense.modelo.Enum.TipoPago
@@ -11,16 +10,11 @@ import com.example.proyectokotlinense.modelo.Usuario
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 import java.io.IOException
 import java.time.LocalDateTime
 
@@ -35,43 +29,45 @@ class CuentaService {
      * @param idParticipante id del participante a eliminar
      * @return el grupo actualizado
      */
-    suspend fun eliminarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta = withContext(Dispatchers.IO) {
-        val client = OkHttpClient()
-        val mensaje = """
+    suspend fun eliminarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta =
+        withContext(Dispatchers.IO) {
+            val client = OkHttpClient()
+            val mensaje = """
             {
                 "idUsuario": $idUsuario,
                 "idGrupo": ${cuenta.id},
                 "idParticipante": $idParticipante
             }
         """.trimIndent()
-        val request = Request.Builder()
-            .url("$URL/participantes/eliminar")
-            .delete(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
-        val cuentaNueva:Cuenta = cuenta;
+            val request = Request.Builder()
+                .url("$URL/participantes/eliminar")
+                .delete(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+            val cuentaNueva: Cuenta = cuenta;
 
-        try {
-            val response = client.newCall(request).execute()
-
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-            val texto = response.body!!.string()
-            val cuentaJson: JSONObject
             try {
-                cuentaJson = JSONObject(texto)
+                val response = client.newCall(request).execute()
 
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val texto = response.body!!.string()
+                val cuentaJson: JSONObject
+                try {
+                    cuentaJson = JSONObject(texto)
+
+                } catch (e: Exception) {
+                    throw Exception("Error la cuenta esta vacia", e)
+                }
+
+                cuentaJson.getJSONArray("participantes")
+                cuentaNueva.participantes =
+                    recuperarUsuarios(cuentaJson.getJSONArray("participantes"))
             } catch (e: Exception) {
-                throw Exception("Error la cuenta esta vacia", e)
+                throw Exception("Error al eliminar el usuario", e)
             }
 
-            cuentaJson.getJSONArray("participantes")
-            cuentaNueva.participantes = recuperarUsuarios(cuentaJson.getJSONArray("participantes"))
-        } catch (e: Exception) {
-            throw Exception("Error al eliminar el usuario", e)
+            return@withContext cuentaNueva
         }
-
-        return@withContext cuentaNueva
-    }
 
     /**
      * Añade un participante a un grupo
@@ -80,43 +76,45 @@ class CuentaService {
      * @param idParticipante id del participante a añadir
      * @return el grupo actualizado
      */
-    suspend fun agregarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta = withContext(Dispatchers.IO) {
-        val client = OkHttpClient()
-        val mensaje = """
+    suspend fun agregarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta =
+        withContext(Dispatchers.IO) {
+            val client = OkHttpClient()
+            val mensaje = """
             {
                 "idUsuario": $idUsuario,
                 "idGrupo": ${cuenta.id},
                 "idParticipante": $idParticipante
             }
         """.trimIndent()
-        val request = Request.Builder()
-            .url("$URL/participantes/nuevo")
-            .post(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
-        val cuentaNueva:Cuenta = cuenta;
+            val request = Request.Builder()
+                .url("$URL/participantes/nuevo")
+                .post(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+            val cuentaNueva: Cuenta = cuenta;
 
-        try {
-            val response = client.newCall(request).execute()
-
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-            val texto = response.body!!.string()
-            val cuentaJson: JSONObject
             try {
-                cuentaJson = JSONObject(texto)
+                val response = client.newCall(request).execute()
 
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                val texto = response.body!!.string()
+                val cuentaJson: JSONObject
+                try {
+                    cuentaJson = JSONObject(texto)
+
+                } catch (e: Exception) {
+                    throw Exception("Error la cuenta esta vacia", e)
+                }
+
+                cuentaJson.getJSONArray("participantes")
+                cuentaNueva.participantes =
+                    recuperarUsuarios(cuentaJson.getJSONArray("participantes"))
             } catch (e: Exception) {
-                throw Exception("Error la cuenta esta vacia", e)
+                throw Exception("Error al añadir al usuario", e)
             }
 
-            cuentaJson.getJSONArray("participantes")
-            cuentaNueva.participantes = recuperarUsuarios(cuentaJson.getJSONArray("participantes"))
-        } catch (e: Exception) {
-            throw Exception("Error al añadir al usuario", e)
+            return@withContext cuentaNueva
         }
-
-        return@withContext cuentaNueva
-    }
 
     /**
      * Crea un grupo
@@ -137,7 +135,7 @@ class CuentaService {
             }
         """.trimIndent()
         println("JSON: $json")
-        val cuentaNueva:Cuenta
+        val cuentaNueva: Cuenta
 
         val request = Request.Builder()
             .url("$URL/nuevo/$idUsuario")
@@ -172,7 +170,7 @@ class CuentaService {
         val request = Request.Builder()
             .url("$URL/cuenta/$idCuenta")
             .build()
-        val cuenta:Cuenta;
+        val cuenta: Cuenta;
 
         try {
             val response = client.newCall(request).execute()
@@ -223,9 +221,10 @@ class CuentaService {
      * @param gasto gasto a añadir
      * @return el gasto añadido
      */
-    suspend fun agregarGasto(idUsuario: Int, cuenta: Cuenta, gasto: Producto): Producto = withContext(Dispatchers.IO) {
-        val client = OkHttpClient()
-        val mensaje = """
+    suspend fun agregarGasto(idUsuario: Int, cuenta: Cuenta, gasto: Producto): Producto =
+        withContext(Dispatchers.IO) {
+            val client = OkHttpClient()
+            val mensaje = """
             {
                 "idUsuario": $idUsuario,
                 "idGrupo": ${cuenta.id},
@@ -237,28 +236,28 @@ class CuentaService {
                 }
             }
         """.trimIndent()
-        val request = Request.Builder()
-            .url("$URL/gasto/nuevo/$idUsuario")
-            .post(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
-        val producto:Producto
+            val request = Request.Builder()
+                .url("$URL/gasto/nuevo/$idUsuario")
+                .post(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+            val producto: Producto
 
-        try {
-            val response = client.newCall(request).execute()
+            try {
+                val response = client.newCall(request).execute()
 
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-            val texto = response.body!!.string()
+                val texto = response.body!!.string()
 
-            val gruposJson = JSONObject(texto)
-            producto = recuperarProducto(gruposJson)
+                val gruposJson = JSONObject(texto)
+                producto = recuperarProducto(gruposJson)
 
-        } catch (e: Exception) {
-            throw Exception("Error al recuperar los grupos", e)
+            } catch (e: Exception) {
+                throw Exception("Error al recuperar los grupos", e)
+            }
+
+            return@withContext producto
         }
-
-        return@withContext producto
-    }
 
     /**
      * Obtiene los gastos de un grupo
@@ -266,12 +265,12 @@ class CuentaService {
      * @throws Exception si ocurre un error al recuperar los gastos
      * @return los gastos del grupo
      */
-    suspend fun getGastos(idCuenta: Int)  = withContext(Dispatchers.IO) {
+    suspend fun getGastos(idCuenta: Int) = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("$URL/gasto/$idCuenta")
             .build()
-        val producto:ArrayList<Producto>
+        val producto: ArrayList<Producto>
         try {
             val response = client.newCall(request).execute()
 
@@ -292,12 +291,12 @@ class CuentaService {
      * @throws Exception si ocurre un error al recuperar los balances
      * @return los balances del grupo
      */
-    suspend fun getBalances(idCuenta: Int)  = withContext(Dispatchers.IO){
+    suspend fun getBalances(idCuenta: Int) = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("$URL/gastos/$idCuenta")
             .build()
-        val balances:ArrayList<Pair<String, Float>>
+        val balances: ArrayList<Pair<String, Float>>
         try {
             val response = client.newCall(request).execute()
 
@@ -317,12 +316,14 @@ class CuentaService {
         val balances = ArrayList<Pair<String, Float>>()
 
         for (i in 0 until balancesJson.length()) {
-            val balance = Pair(balancesJson.names().getString(i), balancesJson.getDouble(balancesJson.names().getString(i)).toFloat())
+            val balance = Pair(
+                balancesJson.names().getString(i),
+                balancesJson.getDouble(balancesJson.names().getString(i)).toFloat()
+            )
             balances.add(balance)
         }
         return balances
     }
-
 
 
     //suspend fun agregarGasto(idUsuario: Int, cuenta: Cuenta, gasto: Producto, imagen: File?, factura: File?): Producto = withContext(Dispatchers.IO) {
@@ -463,7 +464,7 @@ class CuentaService {
         return cuenta
     }
 
-    private fun recuperarUsuarios(texto:JSONArray): Set<Usuario> {
+    private fun recuperarUsuarios(texto: JSONArray): Set<Usuario> {
         return HashSet<Usuario>(AmigosService().recuperarAmigos(texto));
     }
 

@@ -1,28 +1,16 @@
 package com.example.proyectokotlinense.Servicios
 
-import AmigosService
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.example.proyectokotlinense.modelo.Cuenta
 import com.example.proyectokotlinense.modelo.Enum.Rol
 import com.example.proyectokotlinense.modelo.Enum.TipoPago
-import com.example.proyectokotlinense.modelo.Producto
 import com.example.proyectokotlinense.modelo.Usuario
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONArray
 import org.json.JSONObject
-import java.io.File
 import java.io.IOException
-import java.time.LocalDateTime
 
 
 class UsuarioService {
