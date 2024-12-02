@@ -28,6 +28,12 @@ import java.time.LocalDateTime
 class UsuarioService {
     private val url = "http://10.0.2.2:8080/usuario"
 
+    /**
+     * Obtiene un usuario de la base de datos
+     * @param idUsuario Identificador del usuario
+     * @return Usuario
+     * @throws Exception Error al recuperar el usuario
+     */
     suspend fun getUsuario(idUsuario: Int): Usuario = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -49,6 +55,12 @@ class UsuarioService {
         return@withContext usuario
     }
 
+    /**
+     * Crea un usuario en la base de datos
+     * @param usuario Usuario a crear
+     * @return Usuario creado
+     * @throws Exception Error al crear el usuario
+     */
     suspend fun postUsuario(usuario: Usuario): Usuario = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val json = """
