@@ -28,6 +28,13 @@ class CuentaService {
 
     private val URL: String = "http://10.0.2.2:8080/grupo"
 
+    /**
+     * Elimina un participante de un grupo
+     * @param idUsuario id del usuario que realiza la petición
+     * @param cuenta grupo al que se le va a eliminar el participante
+     * @param idParticipante id del participante a eliminar
+     * @return el grupo actualizado
+     */
     suspend fun eliminarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val mensaje = """
@@ -66,6 +73,13 @@ class CuentaService {
         return@withContext cuentaNueva
     }
 
+    /**
+     * Añade un participante a un grupo
+     * @param idUsuario id del usuario que realiza la petición
+     * @param cuenta grupo al que se le va a añadir el participante
+     * @param idParticipante id del participante a añadir
+     * @return el grupo actualizado
+     */
     suspend fun agregarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val mensaje = """
@@ -104,6 +118,12 @@ class CuentaService {
         return@withContext cuentaNueva
     }
 
+    /**
+     * Crea un grupo
+     * @param idUsuario id del usuario que realiza la petición
+     * @param cuenta grupo a crear
+     * @return el grupo creado
+     */
     suspend fun crearCuenta(idUsuario: Int, cuenta: Cuenta): Cuenta = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val json = """
@@ -140,6 +160,13 @@ class CuentaService {
         return@withContext cuentaNueva
     }
 
+    /**
+     * Obtiene un grupo
+     * @param idUsuario id del usuario que realiza la petición
+     * @param idCuenta id del grupo a obtener
+     * @return el grupo obtenido
+     * @throws Exception si ocurre un error al recuperar el grupo
+     */
     suspend fun getCuenta(idUsuario: Int, idCuenta: Int): Cuenta = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -161,6 +188,12 @@ class CuentaService {
         return@withContext cuenta
     }
 
+    /**
+     * Obtiene los grupos de un usuario
+     * @param idUsuario id del usuario que realiza la petición
+     * @throws Exception si ocurre un error al recuperar los grupos
+     * @return los grupos del usuario
+     */
     suspend fun getCuentas(idUsuario: Int): ArrayList<Cuenta> = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -183,6 +216,13 @@ class CuentaService {
     }
 
 
+    /**
+     * Agrega un gasto a un grupo
+     * @param idUsuario id del usuario que realiza la petición
+     * @param cuenta grupo al que se le va a añadir el gasto
+     * @param gasto gasto a añadir
+     * @return el gasto añadido
+     */
     suspend fun agregarGasto(idUsuario: Int, cuenta: Cuenta, gasto: Producto): Producto = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val mensaje = """
@@ -220,6 +260,68 @@ class CuentaService {
         return@withContext producto
     }
 
+    /**
+     * Obtiene los gastos de un grupo
+     * @param idCuenta id del grupo que realiza la petición
+     * @throws Exception si ocurre un error al recuperar los gastos
+     * @return los gastos del grupo
+     */
+    suspend fun getGastos(idCuenta: Int)  = withContext(Dispatchers.IO) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("$URL/gasto/$idCuenta")
+            .build()
+        val producto:ArrayList<Producto>
+        try {
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+            val gastosJson = JSONArray(response.body!!.string())
+            producto = recuperarProductos(gastosJson)
+        } catch (e: Exception) {
+            throw Exception("Error al recuperar los gastos", e)
+        }
+        return@withContext producto
+    }
+
+
+    /**
+     * Obtiene los balances de un grupo
+     * @param idCuenta id del grupo que realiza la petición
+     * @throws Exception si ocurre un error al recuperar los balances
+     * @return los balances del grupo
+     */
+    suspend fun getBalances(idCuenta: Int)  = withContext(Dispatchers.IO){
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("$URL/gastos/$idCuenta")
+            .build()
+        val balances:ArrayList<Pair<String, Float>>
+        try {
+            val response = client.newCall(request).execute()
+
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val texto = response.body!!.string()
+            val balancesJson = JSONObject(texto)
+            balances = recuperarBalances(balancesJson)
+            println(balancesJson)
+        } catch (e: Exception) {
+            throw Exception("Error al recuperar los balances", e)
+        }
+        return@withContext balances
+    }
+
+
+    private fun recuperarBalances(balancesJson: JSONObject): ArrayList<Pair<String, Float>> {
+        val balances = ArrayList<Pair<String, Float>>()
+
+        for (i in 0 until balancesJson.length()) {
+            val balance = Pair(balancesJson.names().getString(i), balancesJson.getDouble(balancesJson.names().getString(i)).toFloat())
+            balances.add(balance)
+        }
+        return balances
+    }
 
 
 
@@ -304,6 +406,16 @@ class CuentaService {
     //    return@withContext producto
     //}
 
+    private fun recuperarProductos(Json: JSONArray): ArrayList<Producto> {
+        val productos = ArrayList<Producto>()
+
+        for (i in 0 until Json.length()) {
+            productos.add(recuperarProducto(Json[i] as JSONObject))
+        }
+
+        return productos
+
+    }
 
     private fun recuperarProducto(productoJson: JSONObject): Producto {
         val producto = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
