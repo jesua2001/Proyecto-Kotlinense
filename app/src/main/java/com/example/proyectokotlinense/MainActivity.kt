@@ -26,7 +26,7 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
-    private val url = "http://10.0.2.2:8080/api/auth/login"
+    private val url = "http://10.0.2.2:8080/usuario/login"
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         """.trimIndent()
 
         val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
-        val request = Request.Builder().url(url).post(requestBody).build()
+        val request = Request.Builder().url("$url/$username/$password").get().build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: okhttp3.Call, e: IOException) {
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: okhttp3.Call, response: Response) {
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        val Intent = Intent(this@MainActivity, VistaPrincipal::class.java)
+                        val Intent = Intent(this@MainActivity, Grupos::class.java)
                         startActivity(Intent)
                         Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
                     } else {

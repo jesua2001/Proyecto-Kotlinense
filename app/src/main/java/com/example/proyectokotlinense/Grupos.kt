@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +40,7 @@ class Grupos : AppCompatActivity() {
             for (cuenta in cuentas) {
                 val inflater = LayoutInflater.from(this@Grupos)
                 val cardView =
-                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
+                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as RelativeLayout
 
                 val titleTextView = cardView.findViewById<TextView>(R.id.title_text)
                 val precioTextView = cardView.findViewById<TextView>(R.id.precio_text)
@@ -77,7 +77,6 @@ class Grupos : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
 
     }
 }
