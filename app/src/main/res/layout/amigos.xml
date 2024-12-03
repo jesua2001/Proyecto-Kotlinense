@@ -26,7 +26,7 @@
         android:textColorHint="#FFFFFF"
         android:padding="10dp"
         android:background="@drawable/coloryradio"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <SearchView
@@ -47,44 +47,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bell" />
 
-    <androidx.cardview.widget.CardView
-        android:layout_marginTop="20dp"
-        android:layout_width="350dp"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/lineaimaginaria2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/searchView"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="100dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAmigo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="@+id/lineaimaginaria2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:cardBackgroundColor="#626161"
-        app:cardCornerRadius="16dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
-
-            <ImageView
-                android:id="@+id/card_image"
-                android:layout_width="49dp"
-                android:layout_height="45dp"
-                android:contentDescription="Imagen pequeña"
-                android:src="@drawable/iconopersona"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/card_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Ángel"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@id/card_image"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintEnd_toEndOf="parent">
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

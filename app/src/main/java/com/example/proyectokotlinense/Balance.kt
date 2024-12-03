@@ -1,28 +1,22 @@
 package com.example.proyectokotlinense
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.proyectokotlinense.Servicios.CuentaService
 import kotlinx.coroutines.launch
-import com.bumptech.glide.Glide
 
 class Balance : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.balances)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -33,27 +27,30 @@ class Balance : AppCompatActivity() {
         val cuentaService = CuentaService()
 
         lifecycleScope.launch {
-            val cuentas = cuentaService.getCuentas(1)
+            val participantes = cuentaService.getParticipantes(1)
 
-            val container = findViewById<LinearLayout>(R.id.linearLayoutBalance)
+            val contenedor = findViewById<LinearLayout>(R.id.linearLayoutBalance)
 
-            for (cuenta in cuentas) {
-                val inflater = LayoutInflater.from(this@Grupos)
-                val cardView =
-                    inflater.inflate(R.layout.tarjeta, container, false) as RelativeLayout
+            for (participante in participantes) {
+                val balances = cuentaService.getBalances(participante.id)
 
-                val titleTextView = cardView.findViewById<TextView>(R.id.title_text)
-                val precioTextView = cardView.findViewById<TextView>(R.id.precio_text)
-                val imagenUsuario = cardView.findViewById<ImageView>(R.id.image_profile)
+                for (balance in balances) {
+                    val inflador = LayoutInflater.from(this@Balance)
+                    val tarjeta = inflador.inflate(R.layout.tarjeta_balance, contenedor, false) as CardView
 
-                titleTextView.text = cuenta.nombre
-                precioTextView.text = cuenta.saldo.toString()
-                Glide.with(this@Grupos)
-                    .load(cuenta.imagen)
-                    .circleCrop()
-                    .into(imagenUsuario)
+                    val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
+                    val balanceTextView = tarjeta.findViewById<TextView>(R.id.debtLabel)
+                    val imagenUsuarioImageView = tarjeta.findViewById<ImageView>(R.id.card_image)
 
-                container.addView(cardView)
+                    nombreUsuarioTextView.text = balance.first
+                    balanceTextView.text = "Debe ${balance.second}€"
+                    Glide.with(this@Balance)
+                        .load(participante.avatar)
+                        .circleCrop()
+                        .into(imagenUsuarioImageView)
+
+                    contenedor.addView(tarjeta)
+                }
             }
         }
     }
