@@ -229,7 +229,7 @@ class CuentaService {
      * @param gasto gasto a añadir
      * @return el gasto añadido
      */
-    suspend fun agregarGasto(idUsuario: Int, idCuenta: Int, gasto: Producto): Producto =
+    suspend fun agregarGasto(idUsuario: Int, idCuenta: Int, producto: Producto): Producto =
         withContext(Dispatchers.IO) {
             val client = OkHttpClient()
             val mensaje = """
@@ -237,10 +237,10 @@ class CuentaService {
                 "idUsuario": $idUsuario,
                 "idGrupo": ${idCuenta},
                 "producto": {
-                    "nombre": "${gasto.nombre}",
-                    "descripcion": "${gasto.descripcion}",
-                    "precio": ${gasto.precio},
-                    "imagen": "${gasto.imagen}"
+                    "nombre": "${producto.nombre}",
+                    "descripcion": "${producto.descripcion}",
+                    "precio": ${producto.precio},
+                    "imagen": "${producto.imagen}"
                 }
             }
         """.trimIndent()
@@ -248,7 +248,7 @@ class CuentaService {
                 .url("$URL/gasto/nuevo/$idUsuario")
                 .post(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
-            val producto: Producto
+            val productoNuevo: Producto
 
             try {
                 val response = client.newCall(request).execute()
@@ -258,13 +258,13 @@ class CuentaService {
                 val texto = response.body!!.string()
 
                 val gruposJson = JSONObject(texto)
-                producto = recuperarProducto(gruposJson)
+                productoNuevo = recuperarProducto(gruposJson)
 
             } catch (e: Exception) {
                 throw Exception("Error al recuperar los grupos", e)
             }
 
-            return@withContext producto
+            return@withContext productoNuevo
         }
 
     /**
