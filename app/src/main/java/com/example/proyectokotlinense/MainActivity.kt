@@ -69,6 +69,12 @@ class MainActivity : AppCompatActivity() {
                 val userId = responseBody?.toIntOrNull()
                 runOnUiThread {
                     if (userId != null) {
+
+                        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("userId", userId)
+                        editor.apply()
+
                         Toast.makeText(this@MainActivity, "User ID: $userId", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@MainActivity, Grupos::class.java).apply {
                             putExtra("USER_ID", userId)

@@ -20,6 +20,9 @@ import com.bumptech.glide.Glide
 import com.example.proyectokotlinense.Servicios.CuentaService
 import kotlinx.coroutines.launch
 
+// val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+// val storedUserId = sharedPreferences.getInt("userId", -1)
+
 class Grupos : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,11 @@ class Grupos : AppCompatActivity() {
         val cuentaService = CuentaService()
 
         lifecycleScope.launch {
+
+            val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+            val storedUserId = sharedPreferences.getInt("userId", -1)
+            println("Stored user id: $storedUserId")
+
             val cuentas = cuentaService.getCuentas(userId)
 
             val container = findViewById<LinearLayout>(R.id.linearLayoutContainer)
