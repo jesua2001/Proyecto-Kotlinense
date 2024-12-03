@@ -19,7 +19,8 @@
         app:menu="@menu/menu" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:layout_width="238dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="233dp"
         android:layout_height="wrap_content"
         android:hint="Ingrese nombre de usuario"
         android:textColorHint="#FFFFFF"
@@ -29,6 +30,8 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <SearchView
+        android:background="@drawable/coloryradio"
+        android:layout_marginTop="20dp"
         android:id="@+id/searchView"
         android:layout_width="363dp"
         android:layout_height="45dp"
@@ -36,6 +39,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:layout_marginTop="20dp"
         android:id="@+id/imageView"
         android:layout_width="43dp"
         android:layout_height="43dp"
@@ -44,6 +48,7 @@
         app:srcCompat="@drawable/bell" />
 
     <androidx.cardview.widget.CardView
+        android:layout_marginTop="20dp"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
