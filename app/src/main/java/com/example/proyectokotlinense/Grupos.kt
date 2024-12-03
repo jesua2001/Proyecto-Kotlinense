@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,7 @@ class Grupos : AppCompatActivity() {
         lifecycleScope.launch {
             val cuentas = cuentaService.getCuentas(1)
 
-            val container = findViewById<LinearLayout>(R.id.linearLayoutContainer)
+            val container = findViewById<ScrollView>(R.id.linearLayoutContainer)
 
             for (cuenta in cuentas) {
                 val inflater = LayoutInflater.from(this@Grupos)
