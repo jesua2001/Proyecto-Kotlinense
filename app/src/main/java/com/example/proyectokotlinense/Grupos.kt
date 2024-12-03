@@ -36,12 +36,12 @@ class Grupos : AppCompatActivity() {
         lifecycleScope.launch {
             val cuentas = cuentaService.getCuentas(1)
 
-            val container = findViewById<ScrollView>(R.id.linearLayoutContainer)
+            val container = findViewById<LinearLayout>(R.id.linearLayoutContainer)
 
             for (cuenta in cuentas) {
                 val inflater = LayoutInflater.from(this@Grupos)
                 val cardView =
-                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as RelativeLayout
+                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
 
                 val titleTextView = cardView.findViewById<TextView>(R.id.title_text)
                 val precioTextView = cardView.findViewById<TextView>(R.id.precio_text)

@@ -27,6 +27,9 @@
         <activity android:name=".VistaPrincipal" />
         <activity android:name=".Registrarse" />
         <activity android:name=".VistaPerfil" />
+        <activity android:name=".Grupos"/>
+        <activity android:name=".Registrarse"/>
+        <activity android:name=".VistaPerfil"/>
     </application>
 
 </manifest>

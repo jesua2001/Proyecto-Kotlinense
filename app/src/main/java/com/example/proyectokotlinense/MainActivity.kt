@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -50,88 +51,90 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+   private fun login(username: String, password: String) {
+    val urlWithParams = "$url/$username/$password"
+    val request = Request.Builder().url(urlWithParams).get().build()
+    val client = OkHttpClient()
 
-    private fun login(username: String, password: String) {
-        val json = """
-            {
-                "username": "$username",
-                "password": "$password"
+    client.newCall(request).enqueue(object : Callback {
+        override fun onFailure(call: Call, e: IOException) {
+            runOnUiThread {
+                Toast.makeText(this@MainActivity, "El usuario o contraseña son incorrectos", Toast.LENGTH_SHORT).show()
             }
-        """.trimIndent()
+        }
 
-        val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
-        val request = Request.Builder().url("$url/$username/$password").get().build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                val responseBody = response.body?.string()
+                val userId = responseBody?.toIntOrNull()
                 runOnUiThread {
-                    Toast.makeText(this@MainActivity, "El usuario o contraseña son incorrectos", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onResponse(call: okhttp3.Call, response: Response) {
-                runOnUiThread {
-                    if (response.isSuccessful) {
-                        val Intent = Intent(this@MainActivity, Grupos::class.java)
-                        startActivity(Intent)
+                    if (userId != null) {
+                        Toast.makeText(this@MainActivity, "User ID: $userId", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@MainActivity, Grupos::class.java).apply {
+                            putExtra("USER_ID", userId)
+                        }
+                        startActivity(intent)
                         Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Error al obtener el ID de usuario", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
+                }
             }
-        })
-    }
-}
-
-
-@Composable
-private fun VistadelLogin(
-    usuario: String,
-    contaseña: String,
-    usuarioteclado: (String) -> Unit,// Funcion para el teclado es decir el cambio de texto en el textfield de usuario
-    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
-    contraseñateclado: (String) -> Unit, // Funcion para el teclado es decir el cambio de texto en el textfield de contraseña
-    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
-    funcionIniciarSesion: () -> Unit //funcion para el boton de iniciar sesion
-    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
-) {
-    val context = LocalContext.current
-    //Alinear los textos en el centro
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TextField(
-            value = usuario,
-            onValueChange = usuarioteclado,
-            label = { Text("Usuario") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = contaseña,
-            onValueChange = contraseñateclado,
-            label = { Text("Contraseña") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = funcionIniciarSesion,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-        ) {
-            Text(text = "Iniciar Sesión", color = Color.White)
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            val intent = Intent(context, Registrarse::class.java)
-            context.startActivity(intent)
-        }, modifier = Modifier.fillMaxWidth() , colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)) {
-            Text(text = "Registrarse", color = Color.White)
+    })
+}
+    @Composable
+    private fun VistadelLogin(
+        usuario: String,
+        contaseña: String,
+        usuarioteclado: (String) -> Unit,
+        contraseñateclado: (String) -> Unit,
+        funcionIniciarSesion: () -> Unit
+    ) {
+        val context = LocalContext.current
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TextField(
+                value = usuario,
+                onValueChange = usuarioteclado,
+                label = { Text("Usuario") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextField(
+                value = contaseña,
+                onValueChange = contraseñateclado,
+                label = { Text("Contraseña") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = funcionIniciarSesion,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(text = "Iniciar Sesión", color = Color.White)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    val intent = Intent(context, Registrarse::class.java)
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(text = "Registrarse", color = Color.White)
+            }
         }
     }
 }
