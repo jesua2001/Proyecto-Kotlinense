@@ -1,8 +1,5 @@
-package org.divigroup.divigroup.model.enums;
+package com.example.proyectokotlinense.modelo.Enum
 
- enum class Rol {
-    USER,
-    ADMIN,
-    STAFF,
-    SUPERADMIN
+enum class Rol {
+    SUPERADMIN, ADMIN, STAFF, USER
 }

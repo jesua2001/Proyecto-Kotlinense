@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (userId != null) {
                         Toast.makeText(this@MainActivity, "User ID: $userId", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, VistaPrincipal::class.java).apply {
+                        val intent = Intent(this@MainActivity, Grupos::class.java).apply {
                             putExtra("USER_ID", userId)
                         }
                         startActivity(intent)
