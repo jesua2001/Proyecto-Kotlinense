@@ -1,9 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Tema base de la aplicación -->
     <style name="Base.Theme.ProyectoKotlinense" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Fondo blanco para el tema principal -->
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
+    <!-- Tema principal de la aplicación -->
     <style name="Theme.ProyectoKotlinense" parent="Base.Theme.ProyectoKotlinense" />
 </resources>
