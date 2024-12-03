@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VistaPrincipal"/>
+        <activity android:name=".Grupos"/>
         <activity android:name=".Registrarse"/>
         <activity android:name=".VistaPerfil"/>
     </application>
