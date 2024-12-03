@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.proyectokotlinense.CrearProducto">
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:hint="@string/descripcion"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextName"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/image_desc"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="@string/name_hint"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <EditText
+        android:id="@+id/editTextPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/price_hint"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextName"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <EditText
+        android:id="@+id/editTextImageUrl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:hint="@string/image_url_hint"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextPrice"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <Button
+        android:id="@+id/buttonLoadImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/load_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextImageUrl"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.753"
+        app:layout_constraintStart_toEndOf="@id/buttonCancel"
+        app:layout_constraintTop_toBottomOf="@id/buttonLoadImage"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonLoadImage"
+        app:layout_constraintWidth_percent="0.4" />
+
+    <!--app:menu="@menu/menu" -->
+</androidx.constraintlayout.widget.ConstraintLayout>
