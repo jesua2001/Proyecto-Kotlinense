@@ -116,6 +116,7 @@ class CuentaService {
             return@withContext cuentaNueva
         }
 
+
     suspend fun getParticipantes(idCuenta: Int): ArrayList<Usuario> = withContext(Dispatchers.IO) {
         val participante = getCuenta(idCuenta).participantes as ArrayList<Usuario>
 
@@ -228,13 +229,13 @@ class CuentaService {
      * @param gasto gasto a añadir
      * @return el gasto añadido
      */
-    suspend fun agregarGasto(idUsuario: Int, cuenta: Cuenta, gasto: Producto): Producto =
+    suspend fun agregarGasto(idUsuario: Int, idCuenta: Int, gasto: Producto): Producto =
         withContext(Dispatchers.IO) {
             val client = OkHttpClient()
             val mensaje = """
             {
                 "idUsuario": $idUsuario,
-                "idGrupo": ${cuenta.id},
+                "idGrupo": ${idCuenta},
                 "producto": {
                     "nombre": "${gasto.nombre}",
                     "descripcion": "${gasto.descripcion}",

@@ -1,7 +1,13 @@
 package com.example.proyectokotlinense
 
+import androidx.lifecycle.lifecycleScope
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.proyectokotlinense.Servicios.CuentaService
+import com.example.proyectokotlinense.modelo.Cuenta
+import com.example.proyectokotlinense.modelo.Producto
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 import org.junit.Test
 import org.junit.runner.RunWith
