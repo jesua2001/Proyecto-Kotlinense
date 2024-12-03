@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".Grupos">
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/linearLayoutContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="@+id/guideline3">
-        ></ScrollView>
+        ></LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
