@@ -16,6 +16,9 @@
         android:theme="@style/Base.Theme.ProyectoKotlinense"
         tools:targetApi="31">
         <activity
+            android:name=".Gastos"
+            android:exported="false" />
+        <activity
             android:name=".detallesGrupo"
             android:exported="false" />
         <activity
@@ -27,6 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Amigos" />
+        <activity android:name=".Balance" />
         <activity android:name=".Grupos" />
         <activity android:name=".Registrarse" />
         <activity android:name=".VistaPerfil" />
