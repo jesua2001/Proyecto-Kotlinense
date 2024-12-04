@@ -1,6 +1,4 @@
 
-
-
 import android.os.Build
 import com.example.proyectokotlinense.Servicios.AmigosService
 import com.example.proyectokotlinense.modelo.Cuenta
