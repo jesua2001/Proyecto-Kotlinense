@@ -15,9 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp"
-        tools:layout_editor_absoluteX="4dp"
-        tools:layout_editor_absoluteY="139dp">
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/image_profile"
@@ -28,42 +26,47 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />
 
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/title_text"
+
+            <LinearLayout
+                android:id="@+id/linear1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="Título"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/image_star"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                <TextView
+                    android:id="@+id/title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="Título"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2jiji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="100dp"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/hora_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hora"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/precio_text"

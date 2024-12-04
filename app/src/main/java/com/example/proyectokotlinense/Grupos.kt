@@ -50,12 +50,12 @@ class Grupos : AppCompatActivity() {
 
             for (cuenta in cuentas) {
                 val inflater = LayoutInflater.from(this@Grupos)
-                val cardView =
-                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
+                val cardView = inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
 
                 val titleTextView = cardView.findViewById<TextView>(R.id.title_text)
                 val precioTextView = cardView.findViewById<TextView>(R.id.precio_text)
                 val imagenUsuario = cardView.findViewById<ImageView>(R.id.image_profile)
+                val container2 = cardView.findViewById<LinearLayout>(R.id.linearLayout2jiji)
 
                 titleTextView.text = cuenta.nombre
                 precioTextView.text = cuenta.saldo.toString()
@@ -65,6 +65,18 @@ class Grupos : AppCompatActivity() {
                     .into(imagenUsuario)
 
                 container.addView(cardView)
+
+                for (participante in cuenta.participantes) {
+                    val inflater2 = LayoutInflater.from(this@Grupos)
+                    val linear = inflater2.inflate(R.layout.imagenusuarios, container2, false) as ImageView
+
+                    Glide.with(this@Grupos)
+                        .load(participante.avatar)
+                        .circleCrop()
+                        .into(linear)
+
+                    container2.addView(linear)
+                }
             }
         }
     }
