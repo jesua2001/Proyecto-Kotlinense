@@ -20,6 +20,9 @@ import com.bumptech.glide.Glide
 import com.example.proyectokotlinense.Servicios.CuentaService
 import kotlinx.coroutines.launch
 
+// val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+// val storedUserId = sharedPreferences.getInt("userId", -1)
+
 class Grupos : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +34,24 @@ class Grupos : AppCompatActivity() {
             insets
         }
 
+        val userId = intent.getIntExtra("USER_ID", -1)
+
         val cuentaService = CuentaService()
 
         lifecycleScope.launch {
-            val cuentas = cuentaService.getCuentas(1)
 
-            val container = findViewById<ScrollView>(R.id.linearLayoutContainer)
+            val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+            val storedUserId = sharedPreferences.getInt("userId", -1)
+            println("Stored user id: $storedUserId")
+
+            val cuentas = cuentaService.getCuentas(userId)
+
+            val container = findViewById<LinearLayout>(R.id.linearLayoutContainer)
 
             for (cuenta in cuentas) {
                 val inflater = LayoutInflater.from(this@Grupos)
                 val cardView =
-                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as RelativeLayout
+                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
 
                 val titleTextView = cardView.findViewById<TextView>(R.id.title_text)
                 val precioTextView = cardView.findViewById<TextView>(R.id.precio_text)

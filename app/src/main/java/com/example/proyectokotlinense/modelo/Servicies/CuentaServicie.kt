@@ -1,4 +1,6 @@
+package com.example.proyectokotlinense.Servicios
 
+import AmigosService
 import android.os.Build
 import com.example.proyectokotlinense.modelo.Cuenta
 import com.example.proyectokotlinense.modelo.Enum.Rol
@@ -114,14 +116,6 @@ class CuentaService {
             return@withContext cuentaNueva
         }
 
-
-    suspend fun getParticipantes(idCuenta: Int): ArrayList<Usuario> = withContext(Dispatchers.IO) {
-        val participante = getCuenta(idCuenta).participantes as ArrayList<Usuario>
-
-        return@withContext participante
-    }
-
-
     /**
      * Crea un grupo
      * @param idUsuario id del usuario que realiza la petición
@@ -171,7 +165,7 @@ class CuentaService {
      * @return el grupo obtenido
      * @throws Exception si ocurre un error al recuperar el grupo
      */
-    suspend fun getCuenta(idCuenta: Int): Cuenta = withContext(Dispatchers.IO) {
+    suspend fun getCuenta(idUsuario: Int, idCuenta: Int): Cuenta = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("$URL/cuenta/$idCuenta")
@@ -227,13 +221,13 @@ class CuentaService {
      * @param gasto gasto a añadir
      * @return el gasto añadido
      */
-    suspend fun agregarGasto(idUsuario: Int, idCuenta: Int, gasto: Producto): Producto =
+    suspend fun agregarGasto(idUsuario: Int, cuenta: Cuenta, gasto: Producto): Producto =
         withContext(Dispatchers.IO) {
             val client = OkHttpClient()
             val mensaje = """
             {
                 "idUsuario": $idUsuario,
-                "idGrupo": ${idCuenta},
+                "idGrupo": ${cuenta.id},
                 "producto": {
                     "nombre": "${gasto.nombre}",
                     "descripcion": "${gasto.descripcion}",
@@ -441,6 +435,7 @@ class CuentaService {
                 productoJson.getString("imagen"),
                 LocalDateTime.parse(productoJson.getString("fecha")),
                 fatura,
+
                 Usuario(
                     productoJson.getJSONObject("usuario").getInt("id"),
                     productoJson.getJSONObject("usuario").getString("username"),
