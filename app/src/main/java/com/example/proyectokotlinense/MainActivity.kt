@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                             editor.putInt("userId", userId)
                             editor.apply()
 
-                            val intent = Intent(this@MainActivity, Balance::class.java).apply {
+                            val intent = Intent(this@MainActivity, Amigos::class.java).apply {
                                 putExtra("USER_ID", userId)
                             }
                             startActivity(intent)

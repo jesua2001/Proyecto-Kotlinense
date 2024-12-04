@@ -14,13 +14,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-
 import kotlinx.coroutines.launch
 
-class Balance : AppCompatActivity() {
+class Participantes : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.balances)
+        setContentView(R.layout.participantes)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -28,46 +27,24 @@ class Balance : AppCompatActivity() {
         }
 
         val cuentaService = CuentaService()
-
         lifecycleScope.launch {
             val participantes = cuentaService.getParticipantes(1)
-            val balances = cuentaService.getBalances(1)
-            val cuenta = cuentaService.getCuenta(1)
-            val contenedor = findViewById<LinearLayout>(R.id.linearLayoutBalance)
-
-            var totalBalance = 0f
-
-            for (balance in balances) {
-                totalBalance += balance.second
-            }
-
-            val balancePorPersona = if (participantes.isNotEmpty()) cuenta.saldo / participantes.size else 0f
-
-            val totalTextView = findViewById<TextView>(R.id.textViewTotal)
-            val personaTextView = findViewById<TextView>(R.id.textViewPersona)
-
-            totalTextView.text = "Total: ${cuenta.saldo}€"
-            personaTextView.text = "Por persona: ${balancePorPersona}€"
+            val contenedor = findViewById<LinearLayout>(R.id.linearLayoutParticipante)
 
             for (participante in participantes) {
-                for (balance in balances) {
-                    if(balance.first != participante.usuario) continue
-                    val inflador = LayoutInflater.from(this@Balance)
-                    val tarjeta = inflador.inflate(R.layout.tarjeta_balance, contenedor, false) as CardView
+                val inflador = LayoutInflater.from(this@Participantes)
+                val tarjeta = inflador.inflate(R.layout.tarjeta_participante, contenedor, false) as CardView
 
-                    val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
-                    val balanceTextView = tarjeta.findViewById<TextView>(R.id.debtLabel)
-                    val imagenUsuarioImageView = tarjeta.findViewById<ImageView>(R.id.card_image)
+                val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
+                val imagenUsuarioImageView = tarjeta.findViewById<ImageView>(R.id.card_image)
 
-                    nombreUsuarioTextView.text = balance.first
-                    balanceTextView.text = "Debe ${balance.second}€"
-                    Glide.with(this@Balance)
-                        .load(participante.avatar)
-                        .circleCrop()
-                        .into(imagenUsuarioImageView)
+                nombreUsuarioTextView.text = participante.usuario
+                Glide.with(this@Participantes)
+                    .load(participante.avatar)
+                    .circleCrop()
+                    .into(imagenUsuarioImageView)
 
-                    contenedor.addView(tarjeta)
-                }
+                contenedor.addView(tarjeta)
             }
         }
     }
@@ -92,7 +69,4 @@ class Balance : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    //todo: implementar el crear gasto:
-
 }
