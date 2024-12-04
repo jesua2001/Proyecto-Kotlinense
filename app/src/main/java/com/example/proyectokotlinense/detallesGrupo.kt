@@ -13,63 +13,93 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
 class detallesGrupo : AppCompatActivity() {
+
+    private lateinit var cuentaService: CuentaService
+    private lateinit var contenedorGeneral: LinearLayout
+    private var cuentaId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalles_grupo)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val cuentaId = intent.getIntExtra("CUENTA_ID", -1)
+        cuentaId = intent.getIntExtra("CUENTA_ID", -1)
+        cuentaService = CuentaService()
+        contenedorGeneral = findViewById(R.id.contenedorGeneral)
 
-        val cuentaService = CuentaService()
         val imagenCuenta = findViewById<ImageView>(R.id.imageView3)
         val nombreCuenta = findViewById<TextView>(R.id.textView5)
-
+        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
 
         lifecycleScope.launch {
+            val cuenta = cuentaService.getCuenta(cuentaId)
+            nombreCuenta.text = cuenta.nombre
+            Glide.with(this@detallesGrupo)
+                .load(cuenta.imagen)
+                .into(imagenCuenta)
 
-            val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+            mostrarGastos()
+        }
 
-            val tabItemCuenta = findViewById<TabItem>(R.id.cuenta)
-            val tabItemDivision = findViewById<TabItem>(R.id.division)
-            val tabItemPersonas = findViewById<TabItem>(R.id.personas)
-
-            nombreCuenta.text = cuentaService.getCuenta(cuentaId).nombre
-            Glide.with(this@detallesGrupo).load(cuentaService.getCuenta(cuentaId).imagen).into(imagenCuenta)
-
-            val gastos = cuentaService.getGastos(cuentaId)
-
-            val contenedorGeneral = findViewById<LinearLayout>(R.id.contenedorGeneral)
-
-            for (gasto in gastos) {
-                val inflater = layoutInflater
-                val tarjetaGasto = inflater.inflate(R.layout.tarjetagasto, contenedorGeneral, false) as CardView
-
-                val nombreGasto = tarjetaGasto.findViewById<TextView>(R.id.title_text)
-                val precioGasto = tarjetaGasto.findViewById<TextView>(R.id.precio_text)
-                val fechaGasto = tarjetaGasto.findViewById<TextView>(R.id.Hora_text)
-                val imagenGasto = tarjetaGasto.findViewById<ImageView>(R.id.image_profile)
-
-                nombreGasto.text = gasto.nombre
-                precioGasto.text = gasto.precio.toString()
-                fechaGasto.text = gasto.fecha.toString()
-                Glide.with(this@detallesGrupo).load(gasto.imagen).into(imagenGasto)
-
-                contenedorGeneral.addView(tarjetaGasto)
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                lifecycleScope.launch {
+                    when (tab.position) {
+                        0 -> mostrarGastos()
+                        1 -> mostrarDivision()
+                        2 -> mostrarPersonas()
+                    }
+                }
             }
 
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+    }
 
+    private suspend fun mostrarGastos() {
+        contenedorGeneral.removeAllViews()
+        val gastos = cuentaService.getGastos(cuentaId)
+        for (gasto in gastos) {
+            val inflater = layoutInflater
+            val tarjetaGasto = inflater.inflate(R.layout.tarjetagasto, contenedorGeneral, false) as CardView
 
+            val nombreGasto = tarjetaGasto.findViewById<TextView>(R.id.title_text)
+            val precioGasto = tarjetaGasto.findViewById<TextView>(R.id.precio_text)
+            val fechaGasto = tarjetaGasto.findViewById<TextView>(R.id.Hora_text)
+            val imagenGasto = tarjetaGasto.findViewById<ImageView>(R.id.image_profile)
 
+            nombreGasto.text = gasto.nombre
+            precioGasto.text = gasto.precio.toString()
+            fechaGasto.text = gasto.fecha.toString()
+            Glide.with(this@detallesGrupo).load(gasto.imagen).into(imagenGasto)
+
+            contenedorGeneral.addView(tarjetaGasto)
         }
+    }
+
+    private suspend fun mostrarDivision() {
+        contenedorGeneral.removeAllViews()
+        val textView = TextView(this@detallesGrupo)
+        textView.text = "División de gastos no implementada aún"
+        contenedorGeneral.addView(textView)
+    }
+
+    private suspend fun mostrarPersonas() {
+        contenedorGeneral.removeAllViews()
+        // Aquí añade tu lógica para mostrar las personas
+        val textView = TextView(this@detallesGrupo)
+        textView.text = "Personas no implementado aún"
+        contenedorGeneral.addView(textView)
     }
 }
