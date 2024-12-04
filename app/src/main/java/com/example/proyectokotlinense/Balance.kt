@@ -1,9 +1,8 @@
 package com.example.proyectokotlinense
 
-import android.content.Intent
+import CuentaService
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -13,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.proyectokotlinense.Servicios.CuentaService
+
 import kotlinx.coroutines.launch
 
 class Balance : AppCompatActivity() {
@@ -55,26 +54,5 @@ class Balance : AppCompatActivity() {
                 }
             }
         }
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.profile -> {
-                val intent = Intent(this, VistaPerfil::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.home -> {
-                val intent = Intent(this, Grupos::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.search -> {
-                val intent = Intent(this, Amigos::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
     }
 }
