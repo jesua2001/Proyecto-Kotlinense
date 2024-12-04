@@ -1,8 +1,10 @@
 package com.example.proyectokotlinense
 
 import CuentaService
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -29,11 +31,10 @@ class Balance : AppCompatActivity() {
 
         lifecycleScope.launch {
             val participantes = cuentaService.getParticipantes(1)
-
+            val balances = cuentaService.getBalances(1)
             val contenedor = findViewById<LinearLayout>(R.id.linearLayoutBalance)
 
             for (participante in participantes) {
-                val balances = cuentaService.getBalances(participante.id)
 
                 for (balance in balances) {
                     val inflador = LayoutInflater.from(this@Balance)
@@ -54,5 +55,27 @@ class Balance : AppCompatActivity() {
                 }
             }
         }
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.profile -> {
+                val intent = Intent(this, VistaPerfil::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.home -> {
+                val intent = Intent(this, Grupos::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.search -> {
+                val intent = Intent(this, Amigos::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
     }
 }
