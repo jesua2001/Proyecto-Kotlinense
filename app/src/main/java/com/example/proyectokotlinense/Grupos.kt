@@ -1,5 +1,6 @@
 package com.example.proyectokotlinense
 
+import CuentaService
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +18,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.proyectokotlinense.Servicios.CuentaService
 import kotlinx.coroutines.launch
 
 // val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
@@ -50,12 +50,12 @@ class Grupos : AppCompatActivity() {
 
             for (cuenta in cuentas) {
                 val inflater = LayoutInflater.from(this@Grupos)
-                val cardView =
-                    inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
+                val cardView = inflater.inflate(R.layout.tarjeta_grupo, container, false) as CardView
 
                 val titleTextView = cardView.findViewById<TextView>(R.id.title_text)
                 val precioTextView = cardView.findViewById<TextView>(R.id.precio_text)
                 val imagenUsuario = cardView.findViewById<ImageView>(R.id.image_profile)
+                val container2 = cardView.findViewById<LinearLayout>(R.id.linearLayout2jiji)
 
                 titleTextView.text = cuenta.nombre
                 precioTextView.text = cuenta.saldo.toString()
@@ -64,7 +64,25 @@ class Grupos : AppCompatActivity() {
                     .circleCrop()
                     .into(imagenUsuario)
 
+                cardView.setOnClickListener {
+                    val intent = Intent(this@Grupos, detallesGrupo::class.java)
+                    intent.putExtra("CUENTA_ID", cuenta.id)
+                    startActivity(intent)
+                }
+
                 container.addView(cardView)
+
+                for (participante in cuenta.participantes) {
+                    val inflater2 = LayoutInflater.from(this@Grupos)
+                    val linear = inflater2.inflate(R.layout.imagenusuarios, container2, false) as ImageView
+
+                    Glide.with(this@Grupos)
+                        .load(participante.avatar)
+                        .circleCrop()
+                        .into(linear)
+
+                    container2.addView(linear)
+                }
             }
         }
     }
@@ -83,6 +101,11 @@ class Grupos : AppCompatActivity() {
             }
             R.id.home -> {
                 val intent = Intent(this, Grupos::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.search -> {
+                val intent = Intent(this, Amigos::class.java)
                 startActivity(intent)
                 true
             }
