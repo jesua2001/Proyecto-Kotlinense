@@ -86,6 +86,11 @@ class Grupos : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.search -> {
+                val intent = Intent(this, Amigos::class.java)
+                startActivity(intent)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
 
