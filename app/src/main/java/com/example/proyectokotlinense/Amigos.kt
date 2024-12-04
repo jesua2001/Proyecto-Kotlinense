@@ -1,6 +1,5 @@
 package com.example.proyectokotlinense
 
-import AmigosService
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ImageView
@@ -12,6 +11,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.proyectokotlinense.Servicios.AmigosService
 import kotlinx.coroutines.launch
 
 class Amigos : AppCompatActivity() {
