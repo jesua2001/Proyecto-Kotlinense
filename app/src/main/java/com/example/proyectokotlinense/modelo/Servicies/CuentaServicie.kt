@@ -116,14 +116,6 @@ class CuentaService {
             return@withContext cuentaNueva
         }
 
-
-    suspend fun getParticipantes(idCuenta: Int): ArrayList<Usuario> = withContext(Dispatchers.IO) {
-        val participante = getCuenta(idCuenta).participantes as ArrayList<Usuario>
-
-        return@withContext participante
-    }
-
-
     /**
      * Crea un grupo
      * @param idUsuario id del usuario que realiza la petición
@@ -173,7 +165,7 @@ class CuentaService {
      * @return el grupo obtenido
      * @throws Exception si ocurre un error al recuperar el grupo
      */
-    suspend fun getCuenta(idCuenta: Int): Cuenta = withContext(Dispatchers.IO) {
+    suspend fun getCuenta(idUsuario: Int, idCuenta: Int): Cuenta = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("$URL/cuenta/$idCuenta")
@@ -443,6 +435,7 @@ class CuentaService {
                 productoJson.getString("imagen"),
                 LocalDateTime.parse(productoJson.getString("fecha")),
                 fatura,
+
                 Usuario(
                     productoJson.getJSONObject("usuario").getInt("id"),
                     productoJson.getJSONObject("usuario").getString("username"),

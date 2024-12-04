@@ -1,5 +1,3 @@
-package com.example.proyectokotlinense.Servicios
-
 import com.example.proyectokotlinense.modelo.Enum.Rol
 import com.example.proyectokotlinense.modelo.Enum.TipoPago
 import com.example.proyectokotlinense.modelo.Usuario
@@ -54,5 +52,3 @@ class AmigosService {
         return amigos
     }
 }
-
-

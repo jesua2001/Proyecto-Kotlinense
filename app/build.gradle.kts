@@ -38,6 +38,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+
 }
 
 dependencies {
@@ -55,6 +56,7 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.cardview:cardview:1.0.0")
 
 
     implementation("androidx.fragment:fragment-ktx:1.3.6")
@@ -64,6 +66,8 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+
 
 
 }

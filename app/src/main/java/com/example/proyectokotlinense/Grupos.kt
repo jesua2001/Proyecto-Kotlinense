@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,9 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.proyectokotlinense.Servicios.CuentaService
 import kotlinx.coroutines.launch
+
+// val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+// val storedUserId = sharedPreferences.getInt("userId", -1)
 
 class Grupos : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +34,17 @@ class Grupos : AppCompatActivity() {
             insets
         }
 
+        val userId = intent.getIntExtra("USER_ID", -1)
+
         val cuentaService = CuentaService()
 
         lifecycleScope.launch {
-            val cuentas = cuentaService.getCuentas(1)
+
+            val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+            val storedUserId = sharedPreferences.getInt("userId", -1)
+            println("Stored user id: $storedUserId")
+
+            val cuentas = cuentaService.getCuentas(userId)
 
             val container = findViewById<LinearLayout>(R.id.linearLayoutContainer)
 
@@ -77,7 +88,6 @@ class Grupos : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-
 
     }
 }
