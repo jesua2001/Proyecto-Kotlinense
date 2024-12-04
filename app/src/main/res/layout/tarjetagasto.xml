@@ -60,6 +60,13 @@
                 android:text="Precio"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+            <TextView
+                android:id="@+id/Hora_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hora"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

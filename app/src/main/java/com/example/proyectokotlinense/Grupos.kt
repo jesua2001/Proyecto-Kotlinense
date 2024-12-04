@@ -64,6 +64,12 @@ class Grupos : AppCompatActivity() {
                     .circleCrop()
                     .into(imagenUsuario)
 
+                cardView.setOnClickListener {
+                    val intent = Intent(this@Grupos, detallesGrupo::class.java)
+                    intent.putExtra("CUENTA_ID", cuenta.id)
+                    startActivity(intent)
+                }
+
                 container.addView(cardView)
 
                 for (participante in cuenta.participantes) {
