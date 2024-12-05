@@ -1,0 +1,10 @@
+<ImageView android:id="@+id/imagenUsuario"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_gravity="center"
+    android:src="@drawable/ic_launcher_background"
+    android:scaleType="centerCrop"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+
