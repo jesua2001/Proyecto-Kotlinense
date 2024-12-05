@@ -1,7 +1,10 @@
 package com.example.proyectokotlinense
 
 import CuentaService
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -97,9 +100,35 @@ class detallesGrupo : AppCompatActivity() {
 
     private suspend fun mostrarPersonas() {
         contenedorGeneral.removeAllViews()
-        // Aquí añade tu lógica para mostrar las personas
         val textView = TextView(this@detallesGrupo)
         textView.text = "Personas no implementado aún"
         contenedorGeneral.addView(textView)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.profile -> {
+                val intent = Intent(this, VistaPerfil::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.home -> {
+                val intent = Intent(this, Grupos::class.java)
+                startActivity(intent)
+                true
+            }
+            R.id.search -> {
+                val intent = Intent(this, Amigos::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
     }
 }
