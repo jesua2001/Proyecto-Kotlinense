@@ -120,12 +120,6 @@ class Grupos : AppCompatActivity() {
                     container2.addView(linear)
                 }
             }
-            R.id.search -> {
-                val intent = Intent(this, Amigos::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
 
     }

@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.proyectokotlinense.Servicios.AmigosService
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 class Amigos : AppCompatActivity() {
@@ -57,6 +58,38 @@ class Amigos : AppCompatActivity() {
                     .into(imagenUsuarioImageView)
 
                 contenedor.addView(tarjeta)
+            }
+        }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    if (!this::class.java.equals(Grupos::class.java)) {
+                        val intent = Intent(this, Grupos::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+
+                R.id.profile -> {
+                    if (!this::class.java.equals(VistaPerfil::class.java)) {
+                        val intent = Intent(this, VistaPerfil::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+
+                R.id.search -> {
+                    if (!this::class.java.equals(Amigos::class.java)) {
+                        val intent = Intent(this, Amigos::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+
+                else -> false
             }
         }
     }

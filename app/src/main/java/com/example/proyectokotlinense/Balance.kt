@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import kotlinx.coroutines.launch
 
@@ -41,7 +42,8 @@ class Balance : AppCompatActivity() {
                 totalBalance += balance.second
             }
 
-            val balancePorPersona = if (participantes.isNotEmpty()) cuenta.saldo / participantes.size else 0f
+            val balancePorPersona =
+                if (participantes.isNotEmpty()) cuenta.saldo / participantes.size else 0f
 
             val totalTextView = findViewById<TextView>(R.id.textViewTotal)
             val personaTextView = findViewById<TextView>(R.id.textViewPersona)
@@ -51,9 +53,10 @@ class Balance : AppCompatActivity() {
 
             for (participante in participantes) {
                 for (balance in balances) {
-                    if(balance.first != participante.usuario) continue
+                    if (balance.first != participante.usuario) continue
                     val inflador = LayoutInflater.from(this@Balance)
-                    val tarjeta = inflador.inflate(R.layout.tarjeta_balance, contenedor, false) as CardView
+                    val tarjeta =
+                        inflador.inflate(R.layout.tarjeta_balance, contenedor, false) as CardView
 
                     val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
                     val balanceTextView = tarjeta.findViewById<TextView>(R.id.debtLabel)
@@ -70,26 +73,37 @@ class Balance : AppCompatActivity() {
                 }
             }
         }
-    }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.profile -> {
-                val intent = Intent(this, VistaPerfil::class.java)
-                startActivity(intent)
-                true
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    if (!this::class.java.equals(Grupos::class.java)) {
+                        val intent = Intent(this, Grupos::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+
+                R.id.profile -> {
+                    if (!this::class.java.equals(VistaPerfil::class.java)) {
+                        val intent = Intent(this, VistaPerfil::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+
+                R.id.search -> {
+                    if (!this::class.java.equals(Amigos::class.java)) {
+                        val intent = Intent(this, Amigos::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+
+                else -> false
             }
-            R.id.home -> {
-                val intent = Intent(this, Grupos::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.search -> {
-                val intent = Intent(this, Amigos::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
