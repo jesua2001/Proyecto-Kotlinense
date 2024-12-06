@@ -30,7 +30,7 @@
         </activity>
         <activity android:name=".Participantes" />
         <activity android:name=".Amigos"/>
-        <activity android:name=".Balance"/>
+        <activity android:name=".detallesGrupo"/>
         <activity android:name=".Grupos"/>
         <activity android:name=".Registrarse"/>
         <activity android:name=".VistaPerfil"/>

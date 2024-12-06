@@ -3,8 +3,10 @@ package com.example.proyectokotlinense
 import CuentaService
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -124,15 +126,70 @@ class detallesGrupo : AppCompatActivity() {
 
     private suspend fun mostrarDivision() {
         contenedorGeneral.removeAllViews()
-        val textView = TextView(this@detallesGrupo)
-        textView.text = "División de gastos no implementada aún"
-        contenedorGeneral.addView(textView)
+
+        val participantes = cuentaService.getParticipantes(cuentaId)
+        val balances = cuentaService.getBalances(cuentaId)
+        val cuenta = cuentaService.getCuenta(cuentaId)
+        val contenedor = findViewById<LinearLayout>(R.id.contenedorGeneral)
+
+        var totalBalance = 0f
+
+        for (balance in balances) {
+            totalBalance += balance.second
+        }
+
+        val balancePorPersona =
+            if (participantes.isNotEmpty()) cuenta.saldo / participantes.size else 0f
+
+        val totalTextView = findViewById<TextView>(R.id.textViewTotal)
+        val personaTextView = findViewById<TextView>(R.id.textViewPersona)
+
+        totalTextView.text = "Total: ${cuenta.saldo}€"
+        personaTextView.text = "Por persona: ${balancePorPersona}€"
+
+        for (participante in participantes) {
+            for (balance in balances) {
+                if (balance.first != participante.usuario) continue
+                val inflador = LayoutInflater.from(this@detallesGrupo)
+                val tarjeta =
+                    inflador.inflate(R.layout.tarjeta_balance, contenedor, false) as CardView
+
+                val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
+                val balanceTextView = tarjeta.findViewById<TextView>(R.id.debtLabel)
+                val imagenUsuarioImageView = tarjeta.findViewById<ImageView>(R.id.card_image)
+
+                nombreUsuarioTextView.text = balance.first
+                balanceTextView.text = "Debe ${balance.second}€"
+                Glide.with(this@detallesGrupo)
+                    .load(participante.avatar)
+                    .circleCrop()
+                    .into(imagenUsuarioImageView)
+
+                contenedor.addView(tarjeta)
+            }
+        }
     }
 
     private suspend fun mostrarPersonas() {
         contenedorGeneral.removeAllViews()
-        val textView = TextView(this@detallesGrupo)
-        textView.text = "Personas no implementado aún"
-        contenedorGeneral.addView(textView)
+
+        val participantes = cuentaService.getParticipantes(cuentaId)
+        val contenedor = findViewById<LinearLayout>(R.id.contenedorGeneral)
+
+        for (participante in participantes) {
+            val inflador = LayoutInflater.from(this@detallesGrupo)
+            val tarjeta = inflador.inflate(R.layout.tarjeta_participante, contenedor, false) as CardView
+
+            val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
+            val imagenUsuarioImageView = tarjeta.findViewById<ImageView>(R.id.card_image)
+
+            nombreUsuarioTextView.text = participante.usuario
+            Glide.with(this@detallesGrupo)
+                .load(participante.avatar)
+                .circleCrop()
+                .into(imagenUsuarioImageView)
+
+            contenedor.addView(tarjeta)
+        }
     }
 }
