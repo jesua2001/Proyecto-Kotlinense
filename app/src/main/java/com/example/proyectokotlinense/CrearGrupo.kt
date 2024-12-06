@@ -10,9 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import CuentaService
 import com.example.proyectokotlinense.modelo.Cuenta
-import com.example.proyectokotlinense.modelo.Usuario
-import com.example.proyectokotlinense.modelo.Enum.Rol
-import com.example.proyectokotlinense.modelo.Enum.TipoPago
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,23 +50,21 @@ class CrearGrupo : AppCompatActivity() {
             val groupDescription = editTextDescription.text.toString()
 
             if (groupName.isEmpty() || groupDescription.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Todos los campos deben ser rellenados", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val user = Usuario(1, "user", "user", "user", "user", TipoPago.BIZUM, Rol.ADMIN)
             val grupo = Cuenta(0, groupName, groupDescription, imageUrl, "null", setOf(), 1.0f)
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     cuentaService.crearCuenta(1, grupo)
                     runOnUiThread {
-                        Toast.makeText(this@CrearGrupo, "Group saved successfully", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CrearGrupo, "Grupo creado correactamente", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    runOnUiThread {
-                        Toast.makeText(this@CrearGrupo, "Failed to save group: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    println("No se pudo guardar el grupo: ${e.message}")
+
                 }
             }
         }

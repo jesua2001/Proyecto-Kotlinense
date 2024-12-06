@@ -1,6 +1,5 @@
 package com.example.proyectokotlinense
 
-import CuentaService
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -9,6 +8,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import CuentaService
+import UsuarioService
 import com.example.proyectokotlinense.modelo.Producto
 import com.example.proyectokotlinense.modelo.Usuario
 import com.example.proyectokotlinense.modelo.Enum.Rol
@@ -27,6 +28,7 @@ class CrearProducto : AppCompatActivity() {
     private lateinit var buttonLoadImage: Button
     private lateinit var buttonSave: Button
     private val cuentaService = CuentaService()
+    private val usuarioService = UsuarioService()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,20 +69,28 @@ class CrearProducto : AppCompatActivity() {
                 Toast.makeText(this, "Invalid price format", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val user = Usuario(1, "user", "user", "user", "user", TipoPago.BIZUM, Rol.ADMIN)
 
-            val producto = Producto(0, productName, productDescription, price, imageUrl, null, null, user)
+            val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+            val storedUserId = sharedPreferences.getInt("userId", -1)
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    cuentaService.agregarGasto(1, 1, producto)
+                    val user = usuarioService.getUsuario(storedUserId)
+                    if (user == null) {
+                        runOnUiThread {
+                            Toast.makeText(this@CrearProducto, "User not found", Toast.LENGTH_SHORT).show()
+                        }
+                        return@launch
+                    }
+
+                    val producto = Producto(0, productName, productDescription, price, imageUrl, null, null, user)
+
+                    cuentaService.agregarGasto(storedUserId, 1, producto)
                     runOnUiThread {
                         Toast.makeText(this@CrearProducto, "Product saved successfully", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    runOnUiThread {
-                        Toast.makeText(this@CrearProducto, "Failed to save product: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    println("Failed to save product: ${e.message}")
                 }
             }
         }
