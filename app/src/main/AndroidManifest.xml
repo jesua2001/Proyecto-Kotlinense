@@ -16,9 +16,6 @@
         android:theme="@style/Base.Theme.ProyectoKotlinense"
         tools:targetApi="31">
         <activity
-            android:name=".Gastos"
-            android:exported="false" />
-        <activity
             android:name=".detallesGrupo"
             android:exported="false" />
         <activity
