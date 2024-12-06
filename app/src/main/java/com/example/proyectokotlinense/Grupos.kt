@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 // val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
@@ -64,19 +65,16 @@ class Grupos : AppCompatActivity() {
     }
 }
 
-
-
-        val userId = intent.getIntExtra("USER_ID", -1)
-
         val cuentaService = CuentaService()
 
         lifecycleScope.launch {
 
             val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
             val storedUserId = sharedPreferences.getInt("userId", -1)
+
             println("Stored user id: $storedUserId")
 
-            val cuentas = cuentaService.getCuentas(userId)
+            val cuentas = cuentaService.getCuentas(storedUserId)
 
             val container = findViewById<LinearLayout>(R.id.linearLayoutContainer)
 
@@ -119,30 +117,4 @@ class Grupos : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.profile -> {
-                val intent = Intent(this, VistaPerfil::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.home -> {
-                val intent = Intent(this, Grupos::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.search -> {
-                val intent = Intent(this, Amigos::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
-    }
 }

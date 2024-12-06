@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
@@ -68,6 +69,36 @@ class detallesGrupo : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> {
+                    if (!Grupos::class.java.isAssignableFrom(this::class.java)) {
+                        val intent = Intent(this, Grupos::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+                R.id.profile -> {
+                    if (!VistaPerfil::class.java.isAssignableFrom(this::class.java)) {
+                        val intent = Intent(this, VistaPerfil::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+                R.id.search -> {
+                    if (!Amigos::class.java.isAssignableFrom(this::class.java)) {
+                        val intent = Intent(this, Amigos::class.java)
+                        startActivity(intent)
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private suspend fun mostrarGastos() {
@@ -103,32 +134,5 @@ class detallesGrupo : AppCompatActivity() {
         val textView = TextView(this@detallesGrupo)
         textView.text = "Personas no implementado aún"
         contenedorGeneral.addView(textView)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.profile -> {
-                val intent = Intent(this, VistaPerfil::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.home -> {
-                val intent = Intent(this, Grupos::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.search -> {
-                val intent = Intent(this, Amigos::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
     }
 }
