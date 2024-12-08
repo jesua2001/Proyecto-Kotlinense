@@ -23,7 +23,7 @@ import java.io.IOException
 
 class Registrarse : AppCompatActivity() {
 
-    private val url = "http://10.0.2.2:8080/usuario/registrar"
+    private val url = "http://guillemonas.synology.me:8081/usuario/registrar"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
