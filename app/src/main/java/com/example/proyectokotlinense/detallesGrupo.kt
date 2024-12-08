@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -105,6 +106,13 @@ class detallesGrupo : AppCompatActivity() {
 
     private suspend fun mostrarGastos() {
         contenedorGeneral.removeAllViews()
+        val por_persona = findViewById<TextView>(R.id.textViewPersona)
+        val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+
+        por_persona.visibility = View.GONE
+        totalOcultar.visibility = View.GONE
+
+
         val gastos = cuentaService.getGastos(cuentaId)
         for (gasto in gastos) {
             val inflater = layoutInflater
@@ -126,6 +134,12 @@ class detallesGrupo : AppCompatActivity() {
 
     private suspend fun mostrarDivision() {
         contenedorGeneral.removeAllViews()
+
+        val por_persona = findViewById<TextView>(R.id.textViewPersona)
+        val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+
+        por_persona.visibility = View.VISIBLE
+        totalOcultar.visibility = View.VISIBLE
 
         val participantes = cuentaService.getParticipantes(cuentaId)
         val balances = cuentaService.getBalances(cuentaId)
@@ -172,6 +186,12 @@ class detallesGrupo : AppCompatActivity() {
 
     private suspend fun mostrarPersonas() {
         contenedorGeneral.removeAllViews()
+
+        val por_persona = findViewById<TextView>(R.id.textViewPersona)
+        val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+
+        por_persona.visibility = View.GONE
+        totalOcultar.visibility = View.GONE
 
         val participantes = cuentaService.getParticipantes(cuentaId)
         val contenedor = findViewById<LinearLayout>(R.id.contenedorGeneral)
