@@ -1,6 +1,7 @@
 package com.example.proyectokotlinense
 
-import CuentaService
+
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.proyectokotlinense.Servicios.CuentaService
 
 import com.example.proyectokotlinense.modelo.Producto
 import com.squareup.picasso.Picasso
@@ -68,6 +70,10 @@ class CrearProducto : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 cuentaService.agregarGasto(storedUserId,cuentaId, producto)
             }
+
+            val intent = Intent(this, detallesGrupo::class.java)
+            intent.putExtra("CUENTA_ID", cuentaId)
+            startActivity(intent)
         }
     }
 }

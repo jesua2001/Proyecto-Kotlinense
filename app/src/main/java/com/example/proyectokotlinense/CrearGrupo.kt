@@ -1,5 +1,6 @@
 package com.example.proyectokotlinense
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -8,8 +9,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import CuentaService
 import android.content.SharedPreferences
+import com.example.proyectokotlinense.Servicios.CuentaService
 import com.example.proyectokotlinense.modelo.Cuenta
 import com.example.proyectokotlinense.modelo.Usuario
 import com.example.proyectokotlinense.modelo.Enum.Rol
@@ -76,6 +77,9 @@ class CrearGrupo : AppCompatActivity() {
                     }
                 }
             }
+
+            val intent = Intent(this, Grupos::class.java)
+            startActivity(intent)
         }
     }
 }
