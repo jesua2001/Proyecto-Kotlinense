@@ -16,6 +16,9 @@
         android:theme="@style/Base.Theme.ProyectoKotlinense"
         tools:targetApi="31">
         <activity
+            android:name=".AnyadirParticipante"
+            android:exported="false" />
+        <activity
             android:name=".CrearGrupo"
             android:exported="false" />
         <activity
@@ -30,7 +33,7 @@
         <activity android:name=".Participantes" />
         <activity android:name=".Amigos" />
         <activity android:name=".DetallesGrupo" />
-        <activity android:name=".CrearProducto"/>
+        <activity android:name=".CrearProducto" />
         <activity android:name=".Grupos" />
         <activity android:name=".Registrarse" />
         <activity android:name=".VistaPerfil" />

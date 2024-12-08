@@ -17,16 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/labelName"
-        android:layout_width="51dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/name_label"
-        app:layout_constraintEnd_toStartOf="@id/editTextName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
-
     <EditText
         android:id="@+id/editTextName"
         android:layout_width="0dp"
@@ -35,19 +25,9 @@
         android:hint="@string/name_hint"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelName"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintWidth_percent="0.8" />
-
-    <TextView
-        android:id="@+id/labelDescription"
-        android:layout_width="51dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/descripcion"
-        app:layout_constraintEnd_toStartOf="@id/editTextDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextName" />
 
     <EditText
         android:id="@+id/editTextDescription"
@@ -57,7 +37,7 @@
         android:hint="@string/descripcion"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/labelDescription"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextName"
         app:layout_constraintWidth_percent="0.8" />
 
@@ -73,22 +53,35 @@
         app:layout_constraintTop_toBottomOf="@id/editTextDescription"
         app:layout_constraintWidth_percent="0.8" />
 
+
+    <Button
+        android:id="@+id/buttonAnyadirParticipante"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginTop="32dp"
+        android:text="Añadir Participantes"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLoadImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintTop_toBottomOf="@+id/editTextImageUrl" />
+
     <Button
         android:id="@+id/buttonLoadImage"
-        android:layout_width="0dp"
+        android:layout_width="329dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/load_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextImageUrl"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintWidth_percent="0.8"
+        tools:layout_editor_absoluteY="513dp"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAnyadirParticipante"/>
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36dp"
         android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

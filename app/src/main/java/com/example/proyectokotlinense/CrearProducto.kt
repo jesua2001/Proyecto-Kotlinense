@@ -74,7 +74,7 @@ class CrearProducto : AppCompatActivity() {
                 cuentaService.agregarGasto(storedUserId,cuentaId, producto)
             }
 
-            val intent = Intent(this, detallesGrupo::class.java)
+            val intent = Intent(this, DetallesGrupo::class.java)
             intent.putExtra("CUENTA_ID", cuentaId)
             startActivity(intent)
         }

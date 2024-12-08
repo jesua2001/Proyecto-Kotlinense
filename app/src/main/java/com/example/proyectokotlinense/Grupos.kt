@@ -103,7 +103,7 @@ class Grupos : AppCompatActivity() {
                     .into(imagenUsuario)
 
                 cardView.setOnClickListener {
-                    val intent = Intent(this@Grupos, detallesGrupo::class.java)
+                    val intent = Intent(this@Grupos, DetallesGrupo::class.java)
                     intent.putExtra("CUENTA_ID", cuenta.id)
                     startActivity(intent)
                 }

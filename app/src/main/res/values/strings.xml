@@ -7,7 +7,7 @@
     <string name="name_hint">Introduzca Nombre</string>
     <string name="upload_image">Upload Image</string>
     <string name="cancel">Cancelar</string>
-    <string name="save">Guadar</string>
+    <string name="save">Guardar</string>
     <string name="price_hint">Introduzca Precio</string>
     <string name="image_url_hint">Enter Image URL</string>
     <string name="load_image">Cargar Imagen</string>

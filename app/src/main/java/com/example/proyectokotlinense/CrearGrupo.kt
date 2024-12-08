@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import android.content.SharedPreferences
+import androidx.lifecycle.lifecycleScope
 import com.example.proyectokotlinense.Servicios.CuentaService
 import com.example.proyectokotlinense.modelo.Cuenta
 import com.example.proyectokotlinense.modelo.Usuario
@@ -28,6 +29,7 @@ class CrearGrupo : AppCompatActivity() {
     private lateinit var editTextDescription: EditText
     private lateinit var buttonLoadImage: Button
     private lateinit var buttonSave: Button
+    private lateinit var buttonParticipantes: Button
     private val cuentaService = CuentaService()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -44,6 +46,8 @@ class CrearGrupo : AppCompatActivity() {
         editTextDescription = findViewById(R.id.editTextDescription)
         buttonLoadImage = findViewById(R.id.buttonLoadImage)
         buttonSave = findViewById(R.id.buttonSave)
+        buttonParticipantes = findViewById(R.id.buttonAnyadirParticipante)
+        buttonParticipantes.isEnabled = false
 
         buttonLoadImage.setOnClickListener {
             val imageUrl = editTextImageUrl.text.toString()
@@ -78,8 +82,19 @@ class CrearGrupo : AppCompatActivity() {
                 }
             }
 
-            val intent = Intent(this, Grupos::class.java)
-            startActivity(intent)
+            buttonParticipantes.isEnabled = true
+        }
+
+        buttonParticipantes.setOnClickListener {
+            val intent = Intent(this, AnyadirParticipante::class.java)
+            lifecycleScope.launch {
+                val cuentas = cuentaService.getCuentas(storedUserId)
+                val ultimaCuenta = cuentas.last()
+                val cuentaId = ultimaCuenta.id
+                intent.putExtra("CUENTA_ID", cuentaId )
+                startActivity(intent)
+            }
+
         }
     }
 }
