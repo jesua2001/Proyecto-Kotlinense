@@ -62,6 +62,7 @@ class Amigos : AppCompatActivity() {
         }
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        bottomNavigationView.selectedItemId = R.id.search
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {

@@ -1,14 +1,10 @@
 package com.example.proyectokotlinense
 
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -25,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
-class detallesGrupo : AppCompatActivity() {
+class DetallesGrupo : AppCompatActivity() {
 
     private lateinit var cuentaService: CuentaService
     private lateinit var contenedorGeneral: LinearLayout
@@ -55,7 +51,7 @@ class detallesGrupo : AppCompatActivity() {
         lifecycleScope.launch {
             val cuenta = cuentaService.getCuenta(cuentaId)
             nombreCuenta.text = cuenta.nombre
-            Glide.with(this@detallesGrupo)
+            Glide.with(this@DetallesGrupo)
                 .load(cuenta.imagen)
                 .into(imagenCuenta)
 
@@ -145,7 +141,7 @@ class detallesGrupo : AppCompatActivity() {
 
 
             fechaGasto.text = fechaFormateada
-            Glide.with(this@detallesGrupo).load(gasto.imagen).into(imagenGasto)
+            Glide.with(this@DetallesGrupo).load(gasto.imagen).into(imagenGasto)
 
             contenedorGeneral.addView(tarjetaGasto)
         }
@@ -187,7 +183,7 @@ class detallesGrupo : AppCompatActivity() {
         for (participante in participantes) {
             for (balance in balances) {
                 if (balance.first != participante.usuario) continue
-                val inflador = LayoutInflater.from(this@detallesGrupo)
+                val inflador = LayoutInflater.from(this@DetallesGrupo)
                 val tarjeta =
                     inflador.inflate(R.layout.tarjeta_balance, contenedor, false) as CardView
 
@@ -197,7 +193,7 @@ class detallesGrupo : AppCompatActivity() {
 
                 nombreUsuarioTextView.text = balance.first
                 balanceTextView.text = "Debe ${balance.second}€"
-                Glide.with(this@detallesGrupo)
+                Glide.with(this@DetallesGrupo)
                     .load(participante.avatar)
                     .circleCrop()
                     .into(imagenUsuarioImageView)
@@ -223,14 +219,14 @@ class detallesGrupo : AppCompatActivity() {
         val contenedor = findViewById<LinearLayout>(R.id.contenedorGeneral)
 
         for (participante in participantes) {
-            val inflador = LayoutInflater.from(this@detallesGrupo)
+            val inflador = LayoutInflater.from(this@DetallesGrupo)
             val tarjeta = inflador.inflate(R.layout.tarjeta_participante, contenedor, false) as CardView
 
             val nombreUsuarioTextView = tarjeta.findViewById<TextView>(R.id.card_text)
             val imagenUsuarioImageView = tarjeta.findViewById<ImageView>(R.id.card_image)
 
             nombreUsuarioTextView.text = participante.usuario
-            Glide.with(this@detallesGrupo)
+            Glide.with(this@DetallesGrupo)
                 .load(participante.avatar)
                 .circleCrop()
                 .into(imagenUsuarioImageView)
