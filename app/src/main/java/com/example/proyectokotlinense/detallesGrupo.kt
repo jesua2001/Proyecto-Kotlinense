@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -29,6 +30,7 @@ class detallesGrupo : AppCompatActivity() {
     private lateinit var contenedorGeneral: LinearLayout
     private var cuentaId: Int = -1
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,6 +42,7 @@ class detallesGrupo : AppCompatActivity() {
             insets
         }
 
+        val botonAnyadir = findViewById<Button>(R.id.buttonAnyadir)
         cuentaId = intent.getIntExtra("CUENTA_ID", -1)
         cuentaService = CuentaService()
         contenedorGeneral = findViewById(R.id.contenedorGeneral)
@@ -72,6 +75,12 @@ class detallesGrupo : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+        botonAnyadir.setOnClickListener {
+            val intent = Intent(this, CrearProducto::class.java)
+            intent.putExtra("CUENTA_ID", cuentaId)
+            startActivity(intent)
+        }
 
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -108,9 +117,11 @@ class detallesGrupo : AppCompatActivity() {
         contenedorGeneral.removeAllViews()
         val por_persona = findViewById<TextView>(R.id.textViewPersona)
         val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+        val botonAnyaadir = findViewById<Button>(R.id.buttonAnyadir)
 
         por_persona.visibility = View.GONE
         totalOcultar.visibility = View.GONE
+        botonAnyaadir.visibility = View.VISIBLE
 
 
         val gastos = cuentaService.getGastos(cuentaId)
@@ -137,6 +148,10 @@ class detallesGrupo : AppCompatActivity() {
 
         val por_persona = findViewById<TextView>(R.id.textViewPersona)
         val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+        val botonAnyaadir = findViewById<Button>(R.id.buttonAnyadir)
+
+        botonAnyaadir.visibility = View.GONE
+
 
         por_persona.visibility = View.VISIBLE
         totalOcultar.visibility = View.VISIBLE
@@ -189,6 +204,9 @@ class detallesGrupo : AppCompatActivity() {
 
         val por_persona = findViewById<TextView>(R.id.textViewPersona)
         val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+        val botonAnyaadir = findViewById<Button>(R.id.buttonAnyadir)
+
+        botonAnyaadir.visibility = View.GONE
 
         por_persona.visibility = View.GONE
         totalOcultar.visibility = View.GONE

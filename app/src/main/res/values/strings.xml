@@ -15,4 +15,8 @@
     <string name="name">Name</string>
     <string name="tipo_de_pago">Tipo de Pago</string>
     <string name="rol">Rol</string>
+    <string name="descripcion">Descripción</string>
+    <string name="amigos">Amigos</string>
+    <string name="grupos">Grupos</string>
+    <string name="perfil">Perfil</string>
 </resources>
