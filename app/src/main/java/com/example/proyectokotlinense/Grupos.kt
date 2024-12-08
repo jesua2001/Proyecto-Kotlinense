@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.ScrollView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,7 @@ class Grupos : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val botonAnyadir = findViewById<Button>(R.id.buttonAnyadir)
+        val search = findViewById<SearchView>(R.id.searchView)
 
         bottomNavigationView.setOnItemSelectedListener { item ->
     when (item.itemId) {
@@ -64,10 +66,7 @@ class Grupos : AppCompatActivity() {
         }
         else -> false
     }
-
-
 }
-
         botonAnyadir.setOnClickListener {
             val intent = Intent(this, CrearGrupo::class.java)
             startActivity(intent)
