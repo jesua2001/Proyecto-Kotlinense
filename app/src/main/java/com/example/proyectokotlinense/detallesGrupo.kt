@@ -1,5 +1,7 @@
 package com.example.proyectokotlinense
 
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import CuentaService
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +17,6 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
@@ -136,7 +137,14 @@ class detallesGrupo : AppCompatActivity() {
 
             nombreGasto.text = gasto.nombre
             precioGasto.text = gasto.precio.toString()
-            fechaGasto.text = gasto.fecha.toString()
+
+            val fechaOriginal =  gasto.fecha.toString()
+            val fechaOriginal2 = org.threeten.bp.LocalDateTime.parse(fechaOriginal)
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val fechaFormateada = fechaOriginal2?.format(formatter)
+
+
+            fechaGasto.text = fechaFormateada
             Glide.with(this@detallesGrupo).load(gasto.imagen).into(imagenGasto)
 
             contenedorGeneral.addView(tarjetaGasto)
