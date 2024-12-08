@@ -1,6 +1,5 @@
 package com.example.proyectokotlinense.Servicios
 
-import AmigosService
 import android.os.Build
 import com.example.proyectokotlinense.Servicios.AmigosService
 import com.example.proyectokotlinense.modelo.Cuenta
@@ -21,7 +20,7 @@ import java.time.LocalDateTime
 
 class CuentaService {
 
-    private val URL: String = "http://10.0.2.2:8080/grupo"
+    private val URL: String = "http://192.168.0.248:8080/grupo"
 
     /**
      * Elimina un participante de un grupo

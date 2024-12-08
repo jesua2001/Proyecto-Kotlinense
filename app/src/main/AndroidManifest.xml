@@ -20,9 +20,7 @@
         android:theme="@style/Base.Theme.ProyectoKotlinense"
         tools:targetApi="31"
         android:requestLegacyExternalStorage="true">
-
-        <activity android:name=".MainActivity"
-            android:exported="true">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,8 +32,6 @@
         <activity android:name=".Grupos"/>
         <activity android:name=".Registrarse"/>
         <activity android:name=".VistaPerfil"/>
-
-
     </application>
 
 </manifest>
