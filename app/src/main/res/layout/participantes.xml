@@ -17,48 +17,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/menu" />
 
-    <TextView
-        android:id="@+id/textViewTotal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Total: X€"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textViewPersona"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:layout_marginTop="250dp"
-        android:id="@+id/textViewPersona"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Por persona: X€"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutBalance"
+        android:id="@+id/linearLayoutParticipante"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="@+id/lineaimaginaria">
+        app:layout_constraintTop_toTopOf="@+id/lineaimaginaria3">
         ></LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/lineaimaginaria"
+        android:id="@+id/lineaimaginaria3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="300dp" />
+        app:layout_constraintGuide_begin="220dp" />
 
 
 
@@ -68,6 +43,6 @@
         android:layout_height="68dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/plus" />
+        app:srcCompat="@drawable/participante" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

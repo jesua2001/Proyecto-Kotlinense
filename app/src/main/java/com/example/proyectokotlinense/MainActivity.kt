@@ -50,48 +50,45 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-   private fun login(username: String, password: String) {
-    val urlWithParams = "$url/$username/$password"
-    val request = Request.Builder().url(urlWithParams).get().build()
-    val client = OkHttpClient()
+    private fun login(username: String, password: String) {
+        val urlWithParams = "$url/$username/$password"
+        val request = Request.Builder().url(urlWithParams).get().build()
+        val client = OkHttpClient()
 
-    client.newCall(request).enqueue(object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-            runOnUiThread {
-                Toast.makeText(this@MainActivity, "El usuario o contraseña son incorrectos", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        override fun onResponse(call: Call, response: Response) {
-            if (response.isSuccessful) {
-                val responseBody = response.body?.string()
-                val userId = responseBody?.toIntOrNull()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
-                    if (userId != null) {
+                    Toast.makeText(this@MainActivity, "El usuario o contraseña son incorrectos", Toast.LENGTH_SHORT).show()
+                }
+            }
 
-                        val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putInt("userId", userId)
-                        editor.apply()
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    val userId = responseBody?.toIntOrNull()
+                    runOnUiThread {
+                        if (userId != null) {
+                            val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putInt("userId", userId)
+                            editor.apply()
 
-                        Toast.makeText(this@MainActivity, "User ID: $userId", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, Grupos::class.java).apply {
-                            putExtra("USER_ID", userId)
+                            val intent = Intent(this@MainActivity, Grupos::class.java).apply {
+                                putExtra("USER_ID", userId)
+                            }
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this@MainActivity, "Error al obtener el ID de usuario", Toast.LENGTH_SHORT).show()
                         }
-                        startActivity(intent)
-                        Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this@MainActivity, "Error al obtener el ID de usuario", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
-            } else {
-                runOnUiThread {
-                    Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
-                }
             }
-        }
-    })
-}
+        })
+    }
     @Composable
     private fun VistadelLogin(
         usuario: String,

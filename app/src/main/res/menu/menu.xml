@@ -3,13 +3,13 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/usuarios"
-        android:title="Grupos" />
+        android:title="@string/grupos" />
     <item
         android:id="@+id/search"
         android:icon="@drawable/corazon"
-        android:title="Amigos" />
+        android:title="@string/amigos" />
     <item
         android:id="@+id/profile"
         android:icon="@drawable/empresario"
-        android:title="Perfil" />
+        android:title="@string/perfil" />
 </menu>

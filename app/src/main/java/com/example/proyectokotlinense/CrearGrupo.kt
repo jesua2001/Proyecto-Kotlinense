@@ -9,13 +9,18 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import CuentaService
+import android.content.SharedPreferences
 import com.example.proyectokotlinense.modelo.Cuenta
+import com.example.proyectokotlinense.modelo.Usuario
+import com.example.proyectokotlinense.modelo.Enum.Rol
+import com.example.proyectokotlinense.modelo.Enum.TipoPago
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CrearGrupo : AppCompatActivity() {
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var imageView: ImageView
     private lateinit var editTextImageUrl: EditText
     private lateinit var editTextName: EditText
@@ -28,6 +33,9 @@ class CrearGrupo : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.creacion_grupo)
+
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+        val storedUserId = sharedPreferences.getInt("userId", -1)
 
         imageView = findViewById(R.id.imageView)
         editTextImageUrl = findViewById(R.id.editTextImageUrl)
@@ -50,7 +58,7 @@ class CrearGrupo : AppCompatActivity() {
             val groupDescription = editTextDescription.text.toString()
 
             if (groupName.isEmpty() || groupDescription.isEmpty()) {
-                Toast.makeText(this, "Todos los campos deben ser rellenados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -58,13 +66,14 @@ class CrearGrupo : AppCompatActivity() {
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    cuentaService.crearCuenta(1, grupo)
+                    cuentaService.crearCuenta(storedUserId, grupo)
                     runOnUiThread {
-                        Toast.makeText(this@CrearGrupo, "Grupo creado correactamente", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CrearGrupo, "Group saved successfully", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    println("No se pudo guardar el grupo: ${e.message}")
-
+                    runOnUiThread {
+                        Toast.makeText(this@CrearGrupo, "Failed to save group: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

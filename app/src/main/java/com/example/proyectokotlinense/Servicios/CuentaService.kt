@@ -116,8 +116,8 @@ class CuentaService {
         }
 
 
-    suspend fun getParticipantes(idCuenta: Int): ArrayList<Usuario> = withContext(Dispatchers.IO) {
-        val participante = getCuenta(idCuenta).participantes as ArrayList<Usuario>
+    suspend fun getParticipantes(idCuenta: Int): Set<Usuario> = withContext(Dispatchers.IO) {
+        val participante = getCuenta(idCuenta).participantes
 
         return@withContext participante
     }

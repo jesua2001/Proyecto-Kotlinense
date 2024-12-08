@@ -10,7 +10,7 @@ data class Usuario(
     val avatar: String,
     val pago : String,
     val tipoPago: TipoPago,
-    private val  rol:Rol
+    val  rol:Rol
 ) {
 
 }
