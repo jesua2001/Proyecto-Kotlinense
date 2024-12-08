@@ -76,13 +76,13 @@ class CuentaService {
      * @param idParticipante id del participante a añadir
      * @return el grupo actualizado
      */
-    suspend fun agregarParticipante(idUsuario: Int, cuenta: Cuenta, idParticipante: Int): Cuenta =
+    suspend fun agregarParticipante(idUsuario: Int,idCuenta: Int, idParticipante: Int) =
         withContext(Dispatchers.IO) {
             val client = OkHttpClient()
             val mensaje = """
             {
                 "idUsuario": $idUsuario,
-                "idGrupo": ${cuenta.id},
+                "idGrupo": ${idCuenta},
                 "idParticipante": $idParticipante
             }
         """.trimIndent()
@@ -90,30 +90,17 @@ class CuentaService {
                 .url("$URL/participantes/nuevo")
                 .post(mensaje.toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
-            val cuentaNueva: Cuenta = cuenta;
 
             try {
                 val response = client.newCall(request).execute()
 
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-                val texto = response.body!!.string()
-                val cuentaJson: JSONObject
-                try {
-                    cuentaJson = JSONObject(texto)
-
-                } catch (e: Exception) {
-                    throw Exception("Error la cuenta esta vacia", e)
-                }
-
-                cuentaJson.getJSONArray("participantes")
-                cuentaNueva.participantes =
-                    recuperarUsuarios(cuentaJson.getJSONArray("participantes"))
             } catch (e: Exception) {
                 throw Exception("Error al añadir al usuario", e)
             }
 
-            return@withContext cuentaNueva
+
         }
 
 
