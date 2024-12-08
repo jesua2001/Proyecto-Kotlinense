@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectokotlinense.Servicios.CuentaService
 
 import com.example.proyectokotlinense.modelo.Producto
+import com.example.proyectokotlinense.modelo.Usuario
+import com.example.proyectokotlinense.modelo.Enum.Rol
+import com.example.proyectokotlinense.modelo.Enum.TipoPago
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
