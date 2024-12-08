@@ -4,13 +4,9 @@ package com.example.proyectokotlinense
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -104,7 +100,7 @@ class Grupos : AppCompatActivity() {
                     .into(imagenUsuario)
 
                 cardView.setOnClickListener {
-                    val intent = Intent(this@Grupos, detallesGrupo::class.java)
+                    val intent = Intent(this@Grupos, DetallesGrupo::class.java)
                     intent.putExtra("CUENTA_ID", cuenta.id)
                     startActivity(intent)
                 }

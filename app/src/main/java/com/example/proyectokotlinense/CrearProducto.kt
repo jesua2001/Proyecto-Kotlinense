@@ -1,6 +1,5 @@
 package com.example.proyectokotlinense
 
-import CuentaService
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +8,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.proyectokotlinense.Servicios.CuentaService
 
 import com.example.proyectokotlinense.modelo.Producto
 import com.squareup.picasso.Picasso

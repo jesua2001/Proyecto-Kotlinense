@@ -47,6 +47,8 @@ class VistaPerfil : AppCompatActivity() {
         val usuarioService = UsuarioService()
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
+        bottomNavigationView.selectedItemId = R.id.profile
+
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
