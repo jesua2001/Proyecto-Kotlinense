@@ -1,5 +1,8 @@
 package com.example.proyectokotlinense
 
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import CuentaService
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,18 +10,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.example.proyectokotlinense.Servicios.CuentaService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ class detallesGrupo : AppCompatActivity() {
     private lateinit var cuentaService: CuentaService
     private lateinit var contenedorGeneral: LinearLayout
     private var cuentaId: Int = -1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,7 @@ class detallesGrupo : AppCompatActivity() {
             insets
         }
 
+        val botonAnyadir = findViewById<Button>(R.id.buttonAnyadir)
         cuentaId = intent.getIntExtra("CUENTA_ID", -1)
         cuentaService = CuentaService()
         contenedorGeneral = findViewById(R.id.contenedorGeneral)
@@ -72,6 +76,12 @@ class detallesGrupo : AppCompatActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
+
+        botonAnyadir.setOnClickListener {
+            val intent = Intent(this, CrearProducto::class.java)
+            intent.putExtra("CUENTA_ID", cuentaId)
+            startActivity(intent)
+        }
 
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -108,9 +118,11 @@ class detallesGrupo : AppCompatActivity() {
         contenedorGeneral.removeAllViews()
         val por_persona = findViewById<TextView>(R.id.textViewPersona)
         val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+        val botonAnyaadir = findViewById<Button>(R.id.buttonAnyadir)
 
         por_persona.visibility = View.GONE
         totalOcultar.visibility = View.GONE
+        botonAnyaadir.visibility = View.VISIBLE
 
 
         val gastos = cuentaService.getGastos(cuentaId)
@@ -125,7 +137,14 @@ class detallesGrupo : AppCompatActivity() {
 
             nombreGasto.text = gasto.nombre
             precioGasto.text = gasto.precio.toString()
-            fechaGasto.text = gasto.fecha.toString()
+
+            val fechaOriginal =  gasto.fecha.toString()
+            val fechaOriginal2 = org.threeten.bp.LocalDateTime.parse(fechaOriginal)
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+            val fechaFormateada = fechaOriginal2?.format(formatter)
+
+
+            fechaGasto.text = fechaFormateada
             Glide.with(this@detallesGrupo).load(gasto.imagen).into(imagenGasto)
 
             contenedorGeneral.addView(tarjetaGasto)
@@ -137,6 +156,10 @@ class detallesGrupo : AppCompatActivity() {
 
         val por_persona = findViewById<TextView>(R.id.textViewPersona)
         val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+        val botonAnyaadir = findViewById<Button>(R.id.buttonAnyadir)
+
+        botonAnyaadir.visibility = View.GONE
+
 
         por_persona.visibility = View.VISIBLE
         totalOcultar.visibility = View.VISIBLE
@@ -189,6 +212,9 @@ class detallesGrupo : AppCompatActivity() {
 
         val por_persona = findViewById<TextView>(R.id.textViewPersona)
         val totalOcultar = findViewById<TextView>(R.id.textViewTotal)
+        val botonAnyaadir = findViewById<Button>(R.id.buttonAnyadir)
+
+        botonAnyaadir.visibility = View.GONE
 
         por_persona.visibility = View.GONE
         totalOcultar.visibility = View.GONE

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -37,7 +38,7 @@ class Grupos : AppCompatActivity() {
         }
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
+        val botonAnyadir = findViewById<Button>(R.id.buttonAnyadir)
 
         bottomNavigationView.setOnItemSelectedListener { item ->
     when (item.itemId) {
@@ -64,7 +65,14 @@ class Grupos : AppCompatActivity() {
         }
         else -> false
     }
+
+
 }
+
+        botonAnyadir.setOnClickListener {
+            val intent = Intent(this, CrearGrupo::class.java)
+            startActivity(intent)
+        }
 
         val cuentaService = CuentaService()
 
