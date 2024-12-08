@@ -11,7 +11,7 @@ import org.json.JSONArray
 import java.io.IOException
 
 class AmigosService {
-    private val url = "http://192.168.0.248:8080/amigos"
+    private val url = "http://guillemonas.synology.me:8081/amigos"
 
     suspend fun getAmigos(idUsuario: Int): ArrayList<Usuario> = withContext(Dispatchers.IO) {
         val client = OkHttpClient()

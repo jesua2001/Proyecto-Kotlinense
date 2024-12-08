@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 
 class CuentaService {
 
-    private val URL: String = "http://192.168.0.248:8080/grupo"
+    private val URL: String = "http://guillemonas.synology.me:8081/grupo"
 
     /**
      * Elimina un participante de un grupo
