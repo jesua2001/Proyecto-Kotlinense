@@ -14,7 +14,7 @@ import java.io.IOException
 
 
 class UsuarioService {
-    private val url = "http://10.0.2.2:8080/usuario"
+    private val url = "http://guillemonas.synology.me:8081/usuario"
 
     /**
      * Obtiene un usuario de la base de datos

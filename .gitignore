@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/src/main/java/com/example/proyectokotlinense/Pruebas.kt
+/app/src/main/res/layout/activity_pruebas.xml

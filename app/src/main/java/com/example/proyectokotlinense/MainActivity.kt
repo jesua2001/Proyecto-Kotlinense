@@ -27,7 +27,7 @@ import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
-    private val url = "http://10.0.2.2:8080/usuario/login"
+    private val url = "http://guillemonas.synology.me:8081/usuario/login"
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
