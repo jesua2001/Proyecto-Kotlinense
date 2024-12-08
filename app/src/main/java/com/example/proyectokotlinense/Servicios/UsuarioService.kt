@@ -1,4 +1,4 @@
-package com.example.proyectokotlinense.Servicios
+
 
 import com.example.proyectokotlinense.modelo.Enum.Rol
 import com.example.proyectokotlinense.modelo.Enum.TipoPago
@@ -22,6 +22,8 @@ class UsuarioService {
      * @return Usuario
      * @throws Exception Error al recuperar el usuario
      */
+
+
     suspend fun getUsuario(idUsuario: Int): Usuario = withContext(Dispatchers.IO) {
         val client = OkHttpClient()
         val request = Request.Builder()

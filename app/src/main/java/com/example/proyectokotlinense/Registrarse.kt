@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.proyectokotlinense.modelo.Enum.TipoPago
-import com.example.proyectokotlinense.modelo.RegistroDTO
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -23,29 +23,28 @@ import java.io.IOException
 
 class Registrarse : AppCompatActivity() {
 
-    private val url = "http://10.0.2.2:8080/api/auth/registro";
+    private val url = "http://10.0.2.2:8080/usuario/registrar"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registrar)
 
-        var composablevista = findViewById<ComposeView>(R.id.registrarusuario).setContent {
+        findViewById<ComposeView>(R.id.registrarusuario).setContent {
             registrarse()
         }
     }
 
-    private fun anadirusuario(registroDTO: RegistroDTO) {
+    private fun anadirusuario(username: String, password: String, email: String, avatar: String, tipoPago: TipoPago) {
         val json = """
         {
-            "usuario": "${registroDTO.usuario}",
-            "contraseña": "${registroDTO.contraseña}",
-            "correo": "${registroDTO.correo}",
-            "avatar": "${registroDTO.avatar}",
-            "tipoPago": "${registroDTO.tipoPago}"
+            "username": "$username",
+            "password": "$password",
+            "email": "$email",
+            "avatar": "$avatar",
+            "tipoPago": "$tipoPago"
         }
-    """.trimIndent()
-
+        """.trimIndent()
         val client = OkHttpClient()
         val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
         val request = Request.Builder()
@@ -57,27 +56,18 @@ class Registrarse : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {
-                    Toast.makeText(this@Registrarse, "Error: ${e.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this@Registrarse, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        Toast.makeText(
-                            this@Registrarse,
-                            "Usuario registrado con éxito",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@Registrarse, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@Registrarse, MainActivity::class.java)
                         startActivity(intent)
                     } else {
-                        Toast.makeText(
-                            this@Registrarse,
-                            "Error al registrar usuario: ${response.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@Registrarse, "Error al registrar usuario: ${response.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -143,15 +133,9 @@ class Registrarse : AppCompatActivity() {
                     }
 
                     if (tipoPagoEnum != null) {
-                        val registroDTO =
-                            RegistroDTO(username, password, email, avatar, tipoPagoEnum)
-                        anadirusuario(registroDTO)
+                        anadirusuario(username, password, email, avatar, tipoPagoEnum)
                     } else {
-                        Toast.makeText(
-                            this@Registrarse,
-                            "Tipo de Pago inválido",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Toast.makeText(this@Registrarse, "Tipo de pago no válido", Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

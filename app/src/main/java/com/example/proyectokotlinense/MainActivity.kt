@@ -22,16 +22,16 @@ import androidx.core.view.WindowInsetsCompat
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
-    private val url = "http://10.0.2.2:8080/api/auth/login"
+    private val url = "http://10.0.2.2:8080/usuario/login"
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
 
@@ -50,88 +50,93 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun login(username: String, password: String) {
-        val json = """
-            {
-                "username": "$username",
-                "password": "$password"
-            }
-        """.trimIndent()
-
-        val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaType())
-        val request = Request.Builder().url(url).post(requestBody).build()
+        val urlWithParams = "$url/$username/$password"
+        val request = Request.Builder().url(urlWithParams).get().build()
         val client = OkHttpClient()
+
         client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
+            override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
                     Toast.makeText(this@MainActivity, "El usuario o contraseña son incorrectos", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            override fun onResponse(call: okhttp3.Call, response: Response) {
-                runOnUiThread {
-                    if (response.isSuccessful) {
-                        val Intent = Intent(this@MainActivity, VistaPrincipal::class.java)
-                        startActivity(Intent)
-                        Toast.makeText(this@MainActivity, "EXITO", Toast.LENGTH_SHORT).show()
-                    } else {
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    val userId = responseBody?.toIntOrNull()
+                    runOnUiThread {
+                        if (userId != null) {
+                            val sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            editor.putInt("userId", userId)
+                            editor.apply()
+
+                            val intent = Intent(this@MainActivity, Grupos::class.java).apply {
+                                putExtra("USER_ID", userId)
+                            }
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this@MainActivity, "Error al obtener el ID de usuario", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } else {
+                    runOnUiThread {
                         Toast.makeText(this@MainActivity, "ERROR: ${response.code} ${response.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         })
     }
-}
-
-
-@Composable
-private fun VistadelLogin(
-    usuario: String,
-    contaseña: String,
-    usuarioteclado: (String) -> Unit,// Funcion para el teclado es decir el cambio de texto en el textfield de usuario
-    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
-    contraseñateclado: (String) -> Unit, // Funcion para el teclado es decir el cambio de texto en el textfield de contraseña
-    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
-    funcionIniciarSesion: () -> Unit //funcion para el boton de iniciar sesion
-    //Unit es una lamdad que hace referencia a una funcion que no retorna nada es decir no lleva ningun return
-) {
-    val context = LocalContext.current
-    //Alinear los textos en el centro
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    @Composable
+    private fun VistadelLogin(
+        usuario: String,
+        contaseña: String,
+        usuarioteclado: (String) -> Unit,
+        contraseñateclado: (String) -> Unit,
+        funcionIniciarSesion: () -> Unit
     ) {
-        TextField(
-            value = usuario,
-            onValueChange = usuarioteclado,
-            label = { Text("Usuario") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        TextField(
-            value = contaseña,
-            onValueChange = contraseñateclado,
-            label = { Text("Contraseña") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = funcionIniciarSesion,
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+        val context = LocalContext.current
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Iniciar Sesión", color = Color.White)
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = {
-            val intent = Intent(context, Registrarse::class.java)
-            context.startActivity(intent)
-        }, modifier = Modifier.fillMaxWidth() , colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)) {
-            Text(text = "Registrarse", color = Color.White)
+            TextField(
+                value = usuario,
+                onValueChange = usuarioteclado,
+                label = { Text("Usuario") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            TextField(
+                value = contaseña,
+                onValueChange = contraseñateclado,
+                label = { Text("Contraseña") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = funcionIniciarSesion,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(text = "Iniciar Sesión", color = Color.White)
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    val intent = Intent(context, Registrarse::class.java)
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+            ) {
+                Text(text = "Registrarse", color = Color.White)
+            }
         }
     }
 }

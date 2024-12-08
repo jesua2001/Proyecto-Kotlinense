@@ -2,6 +2,7 @@ package com.example.proyectokotlinense.Servicios
 
 import AmigosService
 import android.os.Build
+import com.example.proyectokotlinense.Servicios.AmigosService
 import com.example.proyectokotlinense.modelo.Cuenta
 import com.example.proyectokotlinense.modelo.Enum.Rol
 import com.example.proyectokotlinense.modelo.Enum.TipoPago
@@ -117,8 +118,8 @@ class CuentaService {
         }
 
 
-    suspend fun getParticipantes(idCuenta: Int): ArrayList<Usuario> = withContext(Dispatchers.IO) {
-        val participante = getCuenta(idCuenta).participantes as ArrayList<Usuario>
+    suspend fun getParticipantes(idCuenta: Int): Set<Usuario> = withContext(Dispatchers.IO) {
+        val participante = getCuenta(idCuenta).participantes
 
         return@withContext participante
     }
