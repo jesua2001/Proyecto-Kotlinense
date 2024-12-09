@@ -3,6 +3,8 @@
     <style name="Base.Theme.ProyectoKotlinense" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Fondo blanco para el tema principal -->
         <item name="android:windowBackground">@android:color/white</item>
+        <!-- Color de la barra de estado -->
+        <item name="android:statusBarColor">@color/black</item>
     </style>
 
     <!-- Tema principal de la aplicación -->

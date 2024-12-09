@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -74,75 +75,108 @@ class Registrarse : AppCompatActivity() {
         })
     }
 
-    @Composable
-    private fun registrarse() {
-        var avatar by remember { mutableStateOf("") }
-        var username by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var tipoPago by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
+   @Composable
+private fun registrarse() {
+    var avatar by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var tipoPago by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(
+            value = avatar,
+            onValueChange = { avatar = it },
+            label = { Text("Avatar URL", color = textColor) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                cursorColor = textColor,
+                focusedLabelColor = textColor,
+                unfocusedLabelColor = textColor
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username", color = textColor) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                cursorColor = textColor,
+                focusedLabelColor = textColor,
+                unfocusedLabelColor = textColor
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email", color = textColor) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                cursorColor = textColor,
+                focusedLabelColor = textColor,
+                unfocusedLabelColor = textColor
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = tipoPago,
+            onValueChange = { tipoPago = it },
+            label = { Text("Tipo de Pago", color = textColor) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                cursorColor = textColor,
+                focusedLabelColor = textColor,
+                unfocusedLabelColor = textColor
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password", color = textColor) },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation(),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = textColor,
+                cursorColor = textColor,
+                focusedLabelColor = textColor,
+                unfocusedLabelColor = textColor
+            )
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = {
+                val tipoPagoEnum = try {
+                    TipoPago.valueOf(tipoPago)
+                } catch (e: IllegalArgumentException) {
+                    null
+                }
+
+                if (tipoPagoEnum != null) {
+                    anadirusuario(username, password, email, avatar, tipoPagoEnum)
+                } else {
+                    Toast.makeText(this@Registrarse, "Tipo de pago no válido", Toast.LENGTH_SHORT).show()
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
         ) {
-            TextField(
-                value = avatar,
-                onValueChange = { avatar = it },
-                label = { Text("Avatar URL") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = tipoPago,
-                onValueChange = { tipoPago = it },
-                label = { Text("Tipo de Pago") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {
-                    val tipoPagoEnum = try {
-                        TipoPago.valueOf(tipoPago)
-                    } catch (e: IllegalArgumentException) {
-                        null
-                    }
-
-                    if (tipoPagoEnum != null) {
-                        anadirusuario(username, password, email, avatar, tipoPagoEnum)
-                    } else {
-                        Toast.makeText(this@Registrarse, "Tipo de pago no válido", Toast.LENGTH_SHORT).show()
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-            ) {
-                Text(text = "Registrar", color = Color.White)
-            }
+            Text(text = "Registrar", color = Color.White)
         }
     }
+}
 }
