@@ -1,5 +1,6 @@
 package com.example.proyectokotlinense
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
@@ -82,6 +83,9 @@ class AnyadirParticipante : AppCompatActivity() {
                     lifecycleScope.launch {
                     cuentaService.agregarParticipante(storedUserId,cuentaId, amigo.id)
                     }
+                    val intent = Intent(this@AnyadirParticipante, Grupos::class.java)
+                    startActivity(intent)
+
                 }
             }
         }
